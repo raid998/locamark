@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import {BrowserRouter} from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles'
+import { theme } from './utils/theme'
 
 
 const rootElement = document.getElementById('root')
@@ -11,7 +13,10 @@ const root = createRoot(rootElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+    <ThemeProvider theme={theme}>
+    <App />
+
+    </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

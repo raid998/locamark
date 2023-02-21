@@ -1,10 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
 import {Routes, Route} from 'react-router-dom'
 import Hello from '../components/Hello/Hello'
-export default () => (
+const Router =   () => (
   <Routes>
     <Route path="/" element={<Hello />} />
     
   </Routes>
 )
 
+export default Router
