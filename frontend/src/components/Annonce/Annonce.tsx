@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { Button, FormControl, Grid, Input, Typography } from "@mui/material";
 import "./annonces.css";
-
+import AddIcon from "@mui/icons-material/Add";
 import Paper from "@mui/material/Paper";
 import { theme } from "../../utils/theme";
 import Box from "@mui/material/Box";
@@ -15,6 +15,7 @@ const Annonce = () => {
       sx={{ margin: "1rem auto" }}
       component="form"
       onSubmit={(e) => {
+        e.preventDefault();
         console.log("submit");
       }}
     >
@@ -127,6 +128,7 @@ const Annonce = () => {
         variant="contained"
         color="primary"
         className="annonce-item"
+        startIcon={<AddIcon />}
       >
         Soumettre
       </Button>
