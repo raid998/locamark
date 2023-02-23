@@ -1,8 +1,8 @@
 import {Routes, Route} from 'react-router-dom'
-import Hello from '../components/Hello/Hello'
+import Annonce from '../components/Annonce/Annonce'
 const Router =   () => (
   <Routes>
-    <Route path="/" element={<Hello />} />
+    <Route path="/annonces/ajouter" element={<Annonce/>} />
     
   </Routes>
 )
