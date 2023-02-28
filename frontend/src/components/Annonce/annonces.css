@@ -5,3 +5,8 @@
 .annonce-item .annonce-item-element {
   padding-bottom: 0.8rem;
 }
+
+.description_error {
+  color: #d32f2f;
+  text-align: center;
+}
