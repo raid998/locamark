@@ -3,18 +3,13 @@ import Drawer from "@mui/material/Drawer";
 import Routes from "../../routes/Routes";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
-import { StarBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const drawerWidth = 240;
 
@@ -27,7 +22,7 @@ const sideBarSections: SideBarItemsType = [
   {
     nom: "Client",
     subElements: [
-      { titre: "Nouvelle annonce", lien: "/" },
+      { titre: "Nouvelle annonce", lien: "/annonces/ajouter" },
       { titre: "Mes annonces", lien: "/" },
       { titre: "Mes propositions reçues", lien: "/" },
     ],
@@ -44,10 +39,18 @@ const sideBarSections: SideBarItemsType = [
 ];
 
 export default function SideBar() {
-  const sideBarElementsStates: Record<string, boolean> = {};
-  sideBarSections.map((section) => {
-    sideBarElementsStates[section.nom] = false;
-  });
+  const [sideBarElementsStates, setSideBarElementsStates] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    sideBarSections.map((section) =>
+      setSideBarElementsStates((elements) => ({
+        ...elements,
+        [section.nom]: false,
+      }))
+    );
+  }, []);
 
   return (
     <Box sx={{ display: "flex", zIndex: 9, position: "relative" }}>
@@ -64,52 +67,49 @@ export default function SideBar() {
       >
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
-            {sideBarSections.map((section, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-
-                  <ListItemText primary={section.nom} />
-                  {sideBarElementsStates[section.nom] ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )}
-
-                  {/* {section.subElements.map((subElement, index) => (
-                    <Link to={subElement.lien} key={index}>
-                      <ListItemText primary={subElement.titre} />
+          {sideBarSections.map((section, index) => (
+            <List
+              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              key={index}
+            >
+              <ListItemButton
+                onClick={() => {
+                  setSideBarElementsStates((elements) => ({
+                    ...elements,
+                    [section.nom]: !sideBarElementsStates[section.nom],
+                  }));
+                }}
+              >
+                <ListItemText primary={section.nom} />
+                {sideBarElementsStates[section.nom] ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )}
+              </ListItemButton>
+              <Collapse
+                in={sideBarElementsStates[section.nom]}
+                timeout="auto"
+                unmountOnExit
+              >
+                <List component="div" disablePadding>
+                  {section.subElements.map((element, index) => (
+                    <Link to={element.lien} key={index}>
+                      <ListItemButton sx={{ pl: 4 }}>
+                        {" "}
+                        <ListItemText primary={element.titre} />
+                      </ListItemButton>
                     </Link>
-                  ))} */}
-                </ListItemButton>
-
-                <Collapse
-                  in={sideBarElementsStates[section.nom]}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <ListItemIcon>
-                        <StarBorder />
-                      </ListItemIcon>
-                      {section.subElements.map((subElement, index) => (
-                        <Link to={subElement.lien} key={index}>
-                          <ListItemText primary={subElement.titre} />
-                        </Link>
-                      ))}
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              </ListItem>
-            ))}
-          </List>
+                  ))}
+                </List>
+              </Collapse>
+            </List>
+          ))}
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" mt="64px" sx={{ flexGrow: 1, p: 3 }}>
         <Routes />
       </Box>
     </Box>
