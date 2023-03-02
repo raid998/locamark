@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,9 +12,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
+import { Link as RouterLink } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+type NavBarItemType = {
+  titre: string;
+  lien: string;
+}[];
+
+const pages: NavBarItemType = [
+  { titre: "Demandes de service", lien: "/annonces" },
+  { titre: "Voir les prestations", lien: "/prestations" },
+  { titre: "Connexion", lien: "/connexion" },
+  { titre: "Inscription", lien: "/inscription" },
+];
+
+const settings = ["Profil", "Compte", "Dashboard", "Déconnexion"];
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -39,7 +51,12 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar
+      position="fixed"
+      sx={{
+        zIndex: 10,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -58,7 +75,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            LOCAMARK
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -90,9 +107,18 @@ const NavBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, i) => (
+                <MenuItem key={i} onClick={handleCloseNavMenu}>
+                  <Link
+                    component={RouterLink}
+                    to={page.lien}
+                    sx={{
+                      textDecoration: "none",
+                      color: "#333",
+                    }}
+                  >
+                    <Typography textAlign="center">{page.titre}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -114,16 +140,26 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            LOCAMARK
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, i) => (
               <Button
-                key={page}
+                key={i}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                <Link
+                  component={RouterLink}
+                  to={page.lien}
+                  color={"#333"}
+                  sx={{
+                    textDecoration: "none",
+                    backgroundColor: "primary.main",
+                  }}
+                >
+                  <Typography textAlign="center">{page.titre}</Typography>
+                </Link>
               </Button>
             ))}
           </Box>
