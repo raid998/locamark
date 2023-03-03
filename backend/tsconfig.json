@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
+    "target": "ES6",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
-  "lib": ["es2015"],
+  "lib": ["ES2022"],
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
