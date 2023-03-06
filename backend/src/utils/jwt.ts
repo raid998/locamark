@@ -5,7 +5,7 @@ export function verifyJwt(token: string) {
   const buffer = Buffer.from(publicKey, "base64");
   const decodedKey = buffer.toString("utf-8");
 
-  return jwt.verify(token, decodedKey);
+  return jwt.verify(token, decodedKey, { algorithms: ["RS256"] });
 }
 
 export function signJwt(payload: any, expiresIn?: string) {
@@ -13,5 +13,5 @@ export function signJwt(payload: any, expiresIn?: string) {
   const buffer = Buffer.from(privateKey, "base64");
   const decodedKey = buffer.toString("utf-8");
 
-  return jwt.sign(payload, decodedKey, { expiresIn });
+  return jwt.sign(payload, decodedKey, { algorithm: "RS256", expiresIn });
 }

@@ -8,6 +8,10 @@ import { z, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
 
 const registerSchema = z.object({
   nom: z.string().max(20).min(1, { message: "Veuillez entrer votre nom" }),
@@ -22,9 +26,10 @@ const registerSchema = z.object({
     .min(8, { message: "Veuillez entrer un mot de passe" }),
 });
 
-type RegisterInput = TypeOf<typeof registerSchema>;
+export type RegisterInput = TypeOf<typeof registerSchema>;
 
 const Inscription = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -42,10 +47,21 @@ const Inscription = () => {
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
+  const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/auth/register", values);
+      setLoading(false);
+      toast.success(response.data.message);
+      navigate("/connexion");
+    } catch (error: any) {
+      setLoading(false);
+
+      toast.error(
+        error.response?.data.message || "Problème lors de l'inscription"
+      );
+    }
   };
-  console.log(errors);
 
   return (
     <Box
@@ -110,6 +126,7 @@ const Inscription = () => {
           type="submit"
           variant="contained"
           sx={{ mt: 3, mb: 3 }}
+          startIcon={loading ? <CircularProgress /> : <></>}
         >
           S'inscrire
         </Button>

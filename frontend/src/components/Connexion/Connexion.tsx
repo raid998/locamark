@@ -7,9 +7,14 @@ import Typography from "@mui/material/Typography";
 import { z, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { login } from "../../features/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
 
-const registerSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email({ message: "Veuillez entrer un email valide" }),
   password: z
     .string()
@@ -17,30 +22,32 @@ const registerSchema = z.object({
     .min(8, { message: "Veuillez entrer votre mot de passe" }),
 });
 
-type RegisterInput = TypeOf<typeof registerSchema>;
+export type LoginInput = TypeOf<typeof loginSchema>;
 
 const Authentification = () => {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
 
   const {
     register,
-    formState: { errors, isSubmitSuccessful },
-    reset,
+    formState: { errors },
     handleSubmit,
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
   });
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful]);
+  const onSubmitHandler: SubmitHandler<LoginInput> = async (values) => {
+    try {
+      const user = await dispatch(login(values)).unwrap();
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
+      localStorage.setItem("token", user.data.token);
+      toast.success("Connexion réussie!");
+      navigate("/");
+    } catch {
+      toast.error("Les coordonnées que vous avez saisies sont erronées.");
+    }
   };
-  console.log(errors);
 
   return (
     <Box
@@ -87,6 +94,7 @@ const Authentification = () => {
           type="submit"
           variant="contained"
           sx={{ mt: 3, mb: 3 }}
+          startIcon={user.loading ? <CircularProgress /> : <></>}
         >
           Se connecter
         </Button>
