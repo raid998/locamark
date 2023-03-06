@@ -1,17 +1,22 @@
-import { Schema, model } from "mongoose";
+import { z } from "zod";
 
-interface IUser {
-  nom: string;
-  prenom: string;
-  email: string;
-  password: string;
-}
-
-const userSchema = new Schema<IUser>({
-  nom: { type: String, required: true },
-  prenom: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
+export const registerSchema = z.object({
+  nom: z.string().max(20).min(1, { message: "Veuillez entrer votre nom" }),
+  prenom: z
+    .string()
+    .max(20)
+    .min(1, { message: "Veuillez entrer votre prénom" }),
+  email: z.string().email({ message: "Veuillez entrer votre email" }),
+  password: z
+    .string()
+    .max(32)
+    .min(8, { message: "Veuillez entrer un mot de passe" }),
 });
 
-const User = model<IUser>("User", userSchema);
+export const loginSchema = z.object({
+  email: z.string().email({ message: "Veuillez entrer un email valide" }),
+  password: z
+    .string()
+    .max(32)
+    .min(8, { message: "Veuillez entrer votre mot de passe" }),
+});
