@@ -1,8 +1,8 @@
 import { Typography, Pagination } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
-import React from "react";
 import ListAnnoncesItem from "../../components/Annonces/ListeAnnoncesItem";
 import { annonces } from "../../datas/annonces";
+
 const ListeAnnonces = () => {
   return (
     <>

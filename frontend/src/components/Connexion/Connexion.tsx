@@ -10,21 +10,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
 const registerSchema = z.object({
-  nom: z.string().max(20).min(1, { message: "Veuillez entrer votre nom" }),
-  prenom: z
-    .string()
-    .max(20)
-    .min(1, { message: "Veuillez entrer votre prénom" }),
-  email: z.string().email({ message: "Veuillez entrer votre email" }),
+  email: z.string().email({ message: "Veuillez entrer un email valide" }),
   motDePasse: z
     .string()
     .max(32)
-    .min(8, { message: "Veuillez entrer un mot de passe" }),
+    .min(8, { message: "Veuillez entrer votre mot de passe" }),
 });
 
 type RegisterInput = TypeOf<typeof registerSchema>;
 
-const Inscription = () => {
+const Authentification = () => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -62,35 +57,16 @@ const Inscription = () => {
     >
       <Container maxWidth="sm">
         <Typography component="h1" variant="h5" align="center" m={4}>
-          Inscription
+          Connexion
         </Typography>
 
         <TextField
           required
           fullWidth
           margin="normal"
-          id="nom"
-          label="Nom"
-          error={!!errors["nom"]}
-          helperText={errors["nom"] ? errors["nom"].message : ""}
-          {...register("nom")}
-        />
-        <TextField
-          required
-          fullWidth
-          margin="normal"
-          id="prenom"
-          label="Prénom"
-          error={!!errors["prenom"]}
-          helperText={errors["prenom"] ? errors["prenom"].message : ""}
-          {...register("prenom")}
-        />
-        <TextField
-          required
-          fullWidth
-          margin="normal"
           id="email"
           label="Email"
+          variant="outlined"
           error={!!errors["email"]}
           helperText={errors["email"] ? errors["email"].message : ""}
           {...register("email")}
@@ -101,6 +77,7 @@ const Inscription = () => {
           margin="normal"
           id="motDePasse"
           label="Mot de passe"
+          variant="outlined"
           error={!!errors["motDePasse"]}
           helperText={errors["motDePasse"] ? errors["motDePasse"].message : ""}
           {...register("motDePasse")}
@@ -111,12 +88,12 @@ const Inscription = () => {
           variant="contained"
           sx={{ mt: 3, mb: 3 }}
         >
-          S'inscrire
+          Se connecter
         </Button>
 
         <Typography align="right">
-          <Link href="/connexion" variant="body1">
-            Vous avez déjà un compte? Connexion
+          <Link href="/inscription" variant="body1">
+            Vous n'avez pas de compte? Inscrivez-vous
           </Link>
         </Typography>
       </Container>
@@ -124,4 +101,4 @@ const Inscription = () => {
   );
 };
 
-export default Inscription;
+export default Authentification;

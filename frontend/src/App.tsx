@@ -1,12 +1,11 @@
-import React from 'react';
-import Routes from './routes/Routes';
-import NavBar from './components/NavBar/NavBar'
+import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 
 function App() {
   return (
     <div className="App">
       <NavBar />
-      <Routes />
+      <SideBar />
     </div>
   );
 }
