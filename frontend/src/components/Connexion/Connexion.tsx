@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 const registerSchema = z.object({
   email: z.string().email({ message: "Veuillez entrer un email valide" }),
-  motDePasse: z
+  password: z
     .string()
     .max(32)
     .min(8, { message: "Veuillez entrer votre mot de passe" }),
@@ -75,12 +75,12 @@ const Authentification = () => {
           required
           fullWidth
           margin="normal"
-          id="motDePasse"
+          id="password"
           label="Mot de passe"
           variant="outlined"
-          error={!!errors["motDePasse"]}
-          helperText={errors["motDePasse"] ? errors["motDePasse"].message : ""}
-          {...register("motDePasse")}
+          error={!!errors["password"]}
+          helperText={errors["password"] ? errors["password"].message : ""}
+          {...register("password")}
         />
         <Button
           fullWidth

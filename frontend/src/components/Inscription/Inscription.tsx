@@ -16,7 +16,7 @@ const registerSchema = z.object({
     .max(20)
     .min(1, { message: "Veuillez entrer votre prénom" }),
   email: z.string().email({ message: "Veuillez entrer votre email" }),
-  motDePasse: z
+  password: z
     .string()
     .max(32)
     .min(8, { message: "Veuillez entrer un mot de passe" }),
@@ -99,11 +99,11 @@ const Inscription = () => {
           required
           fullWidth
           margin="normal"
-          id="motDePasse"
+          id="password"
           label="Mot de passe"
-          error={!!errors["motDePasse"]}
-          helperText={errors["motDePasse"] ? errors["motDePasse"].message : ""}
-          {...register("motDePasse")}
+          error={!!errors["password"]}
+          helperText={errors["password"] ? errors["password"].message : ""}
+          {...register("password")}
         />
         <Button
           fullWidth
