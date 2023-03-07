@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate } from "react-router";
 import { UserState } from "../types";
 const ProtectedRoute = ({
   children,
