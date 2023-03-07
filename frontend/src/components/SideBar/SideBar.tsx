@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Routes from "../../routes/Routes";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -37,8 +36,10 @@ const sideBarSections: SideBarItemsType = [
     ],
   },
 ];
-
-export default function SideBar() {
+type SideBarProps = {
+  routes: JSX.Element;
+};
+export default function SideBar({ routes }: SideBarProps) {
   const [sideBarElementsStates, setSideBarElementsStates] = useState<
     Record<string, boolean>
   >({});
@@ -110,7 +111,7 @@ export default function SideBar() {
         </Box>
       </Drawer>
       <Box component="main" mt="64px" sx={{ flexGrow: 1, p: 3 }}>
-        <Routes />
+        {routes}
       </Box>
     </Box>
   );

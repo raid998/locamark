@@ -1,19 +1,22 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { toast } from "react-toastify";
-import type { LoginInput } from "../components/Connexion/Connexion";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loginRequest } from "../requests/postRequests";
+import { LoginSchema } from "../schemas/user.schema";
+import { UserState } from "../types";
 
-const initialState = { error: "", loading: false, user: {} };
+const initialState: UserState = {
+  error: "",
+  loading: false,
+  user:
+    localStorage.getItem("user") !== "undefined"
+      ? JSON.parse(localStorage?.getItem("user") as string) || null
+      : null,
+};
 
 export const login = createAsyncThunk(
   "user/login",
-  async (data: LoginInput, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("/api/auth/login", data);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
+  async (data: LoginSchema) => {
+    const response = await loginRequest(data);
+    return response.data.data;
   }
 );
 
@@ -23,11 +26,15 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = "";
-        state.user = action.payload;
-      })
+      .addCase(
+        login.fulfilled,
+        (state, action: PayloadAction<UserState["user"]>) => {
+          state.loading = false;
+          state.error = "";
+
+          state.user = action.payload;
+        }
+      )
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Erreur de connexion";

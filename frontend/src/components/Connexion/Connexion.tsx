@@ -4,25 +4,14 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { z, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { login } from "../../features/userSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { CircularProgress } from "@mui/material";
-
-const loginSchema = z.object({
-  email: z.string().email({ message: "Veuillez entrer un email valide" }),
-  password: z
-    .string()
-    .max(32)
-    .min(8, { message: "Veuillez entrer votre mot de passe" }),
-});
-
-export type LoginInput = TypeOf<typeof loginSchema>;
+import { LoginSchema, loginSchema } from "../../schemas/user.schema";
 
 const Authentification = () => {
   const navigate = useNavigate();
@@ -33,15 +22,15 @@ const Authentification = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<LoginInput>({
+  } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmitHandler: SubmitHandler<LoginInput> = async (values) => {
+  const onSubmitHandler: SubmitHandler<LoginSchema> = async (values) => {
     try {
       const user = await dispatch(login(values)).unwrap();
 
-      localStorage.setItem("token", user.data.token);
+      localStorage.setItem("user", JSON.stringify(user));
       toast.success("Connexion réussie!");
       navigate("/");
     } catch {
