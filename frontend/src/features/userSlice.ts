@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { loginRequest } from "../requests/postRequests";
 import { LoginSchema } from "../schemas/user.schema";
 import { UserState } from "../types";
@@ -23,7 +24,15 @@ export const login = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem("user");
+      state.user = null;
+      state.error = "";
+      state.loading = false;
+      toast.success("Déconnecté");
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -31,7 +40,6 @@ export const userSlice = createSlice({
         (state, action: PayloadAction<UserState["user"]>) => {
           state.loading = false;
           state.error = "";
-
           state.user = action.payload;
         }
       )
@@ -46,3 +54,4 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+export const { logout } = userSlice.actions;

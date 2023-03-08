@@ -2,6 +2,7 @@ import { IUser, User } from "../model/user.model";
 import bcrypt from "bcrypt";
 import { signJwt } from "../utils/jwt";
 import { RegisterSchema } from "schemas/user.schema";
+
 export const comparePasswords = async (
   email: string,
   password: string

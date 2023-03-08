@@ -74,6 +74,7 @@ const Authentification = () => {
           id="password"
           label="Mot de passe"
           variant="outlined"
+          type="password"
           error={!!errors["password"]}
           helperText={errors["password"] ? errors["password"].message : ""}
           {...register("password")}

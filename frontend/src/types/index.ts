@@ -28,3 +28,13 @@ export interface IUser {
   prenom: string;
   token: string;
 }
+
+export type NavBarItemType = {
+  titre: string;
+  lien: string;
+}[];
+
+export type settingsType = {
+  titre: string;
+  action: (...args: any) => void;
+}[];

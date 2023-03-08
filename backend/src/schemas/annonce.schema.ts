@@ -39,4 +39,5 @@ export const createAnnonceSchema = z.object({
     .regex(/^0(6|7|9)\d{8}$/, { message: "Le numéro est erroné" }),
   photos: z.string().array().optional(),
 });
+
 export type CreateAnnonceInput = TypeOf<typeof createAnnonceSchema>;

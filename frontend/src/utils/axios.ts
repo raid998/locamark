@@ -11,7 +11,7 @@ axiosPrivate.interceptors.request.use(
   async (request) => {
     const user = store.getState()?.user?.user;
     if (user?.token) {
-      request.headers.setAuthorization(user?.token);
+      request.headers.setAuthorization("Bearer " + user?.token);
       return request;
     }
     // à rajouter dispatch(logout())
