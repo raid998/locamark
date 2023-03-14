@@ -16,6 +16,8 @@ const Annonce = ({ annonce }: Record<string, any>) => {
             maxHeight: "650px",
             maxWidth: "80vw",
             flexDirection: "column",
+            alignItems: "center",
+            justify: "center",
           },
           [theme.breakpoints.up("sm")]: {
             display: "flex",

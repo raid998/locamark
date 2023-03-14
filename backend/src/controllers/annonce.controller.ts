@@ -1,8 +1,13 @@
 import { RequestHandler } from "express";
-import { createAnnonceSchema } from "schemas/annonce.schema";
-import { createAnnonce } from "services/annonce.service";
+import { createAnnonceSchema } from "../schemas/annonce.schema";
+import { createAnnonce, getAllAnnonces } from "../services/annonce.service";
+import { signUser } from "../services/auth.service";
 
-export const annonceController: RequestHandler = async (req, res, next) => {
+export const createAnnonceController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     // Extraire les données reçues de l'annonce
     const annonceData = createAnnonceSchema.safeParse(req.body);
@@ -15,9 +20,25 @@ export const annonceController: RequestHandler = async (req, res, next) => {
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
     const annonce = createAnnonce(annonceData.data, user);
-    // Associer la nouvelle annonce à l'utilisateur connecté
-    // Sauvegarder la nouvelle entité
+
+    return res.send({
+      message: "Annonce créée avec succès",
+      user: await signUser(user.email), // ça pourrait changer
+    });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getAllAnnoncesController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const annonces = getAllAnnonces();
+    return res.send({ annonces });
+  } catch (err) {
+    next(err);
   }
 };

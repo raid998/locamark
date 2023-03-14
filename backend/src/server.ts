@@ -5,6 +5,8 @@ import { logger } from "./middlewares/logger.middleware";
 import { db } from "./db/db";
 import cors from "cors";
 import { deserializeUser } from "./middlewares/deserializeUser.middleware";
+import { seedDB } from "./utils/seed";
+
 const app: Express = express();
 dotenv.config();
 
@@ -14,6 +16,7 @@ app.use(urlencoded({ extended: true }));
 app.use(logger);
 app.use(deserializeUser);
 db();
+seedDB();
 app.use("/api", routes);
 
 app.listen(process.env.PORT, () => {
