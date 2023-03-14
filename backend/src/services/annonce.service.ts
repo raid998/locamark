@@ -16,6 +16,6 @@ export const createAnnonce: (
     return false;
   }
 };
-export const getAllAnnonces = async () => {
-  return await Annonce.find({});
+export const getAllAnnonces = () => {
+  return Annonce.find().populate({ path: "user" }).exec();
 };

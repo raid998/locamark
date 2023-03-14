@@ -33,7 +33,7 @@ annonceSchema.pre("save", function (next) {
   next();
 });
 annonceSchema.pre("insertMany", function (next, annonces) {
-  annonces.forEach((annonce) => {
+  annonces.forEach((annonce: IAnnonce) => {
     annonce.createdAt = new Date();
   });
   next();

@@ -5,14 +5,18 @@ export interface AnnonceState {
 }
 
 export interface IAnnonce {
-  id: string;
+  _id: string;
   titre: string;
-  description: string;
-  adresse: string;
-  complement_adresse?: string | null;
-  code_postal: string;
-  ville: string;
   telephone: string;
+  adresse: string;
+  complement?: string;
+  codePostal: string;
+  ville: string;
+  description: string;
+  photos?: string[];
+  prix: number;
+  createdAt?: Date;
+  user: IUser;
 }
 
 export interface UserState {

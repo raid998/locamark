@@ -14,7 +14,7 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
     if (!user) {
       return next();
     }
-    res.locals.user = user;
+    res.locals.user = { ...user, token };
     return next();
   } catch {
     return next();

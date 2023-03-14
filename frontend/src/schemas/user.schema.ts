@@ -17,8 +17,7 @@ export const loginSchema = z.object({
   email: z.string().email({ message: "Veuillez entrer un email valide" }),
   password: z
     .string()
-    .max(32)
-    .min(8, { message: "Veuillez entrer votre mot de passe" }),
+    .min(1, { message: "Veuillez entrer votre mot de passe" }),
 });
 
 export type LoginSchema = TypeOf<typeof loginSchema>;

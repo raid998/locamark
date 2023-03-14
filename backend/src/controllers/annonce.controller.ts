@@ -19,7 +19,7 @@ export const createAnnonceController: RequestHandler = async (
 
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
-    const annonce = createAnnonce(annonceData.data, user);
+    const annonce = await createAnnonce(annonceData.data, user);
 
     return res.send({
       message: "Annonce créée avec succès",
@@ -36,8 +36,8 @@ export const getAllAnnoncesController: RequestHandler = async (
   next
 ) => {
   try {
-    const annonces = getAllAnnonces();
-    return res.send({ annonces });
+    const annonces = await getAllAnnonces();
+    return res.send(annonces);
   } catch (err) {
     next(err);
   }

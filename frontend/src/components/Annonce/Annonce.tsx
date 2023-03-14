@@ -15,8 +15,17 @@ import {
   CreateAnnonceInput,
   createAnnonceSchema,
 } from "../../schemas/annonce.schema";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { createAnnonce } from "../../features/annonceSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Annonce = () => {
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.annonces);
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -30,20 +39,25 @@ const Annonce = () => {
   useEffect(() => {
     register("description");
   }, [register]);
+
   const description = watch("description");
+
   const setDescription = (description: string) => {
     setValue("description", description);
   };
+
   return (
     <Container
       sx={{ margin: "1rem auto" }}
       component="form"
       onSubmit={handleSubmit(
-        (data) => {
-          console.log(data);
+        async (data) => {
+          await dispatch(createAnnonce(data));
+          toast.success("Annonce créée avec succès");
+          navigate("/annonces", { replace: true });
         },
-        (error) => {
-          console.log(error);
+        () => {
+          toast.error("Erreur lors de la création de l'annonce");
         }
       )}
     >
@@ -229,6 +243,22 @@ const Annonce = () => {
       </Box>
       <Box className="annonce-item">
         <Typography className="annonce-item-element" variant="h5">
+          Budget
+        </Typography>
+        <TextField
+          error={!!errors.prix}
+          helperText={
+            errors.prix
+              ? errors.prix.message
+              : "Seulement les valeurs numériques sont acceptées"
+          }
+          variant="standard"
+          label="Budget"
+          {...register("prix")}
+        />
+      </Box>
+      <Box className="annonce-item">
+        <Typography className="annonce-item-element" variant="h5">
           Contact
         </Typography>
         <TextField
@@ -249,7 +279,7 @@ const Annonce = () => {
         variant="contained"
         color="primary"
         className="annonce-item"
-        startIcon={<AddIcon />}
+        startIcon={loading ? <CircularProgress /> : <AddIcon />}
       >
         Soumettre
       </Button>

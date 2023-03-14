@@ -21,5 +21,9 @@ export const requireUtilisateur: RequestHandler = (req, res, next) => {
         .status(401)
         .send({ message: "Vous devez être connecté pour pouvoir continuer" });
     }
+  } else {
+    return res
+      .status(401)
+      .send({ message: "Vous devez être connecté pour pouvoir continuer" });
   }
 };

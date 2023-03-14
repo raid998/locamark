@@ -3,10 +3,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { IAnnonce } from "../../types";
 import { theme } from "../../utils/theme";
 import "./listeAnnonces.css";
 
-const Annonce = ({ annonce }: Record<string, any>) => {
+const Annonce = ({ annonce }: { annonce: IAnnonce }) => {
   return (
     <>
       <Card
@@ -30,7 +31,7 @@ const Annonce = ({ annonce }: Record<string, any>) => {
         <CardMedia
           component="img"
           sx={{ width: 251 }}
-          image={annonce.image}
+          image={annonce.photos ? annonce.photos[0] : ""}
           alt="Live from space album cover"
         />
 
@@ -46,7 +47,7 @@ const Annonce = ({ annonce }: Record<string, any>) => {
                 maxWith: "50%",
               }}
             >
-              {annonce.name}{" "}
+              {annonce.titre}{" "}
             </Typography>
             <Typography
               variant="caption"
@@ -79,9 +80,9 @@ const Annonce = ({ annonce }: Record<string, any>) => {
               justifyContent={"flex-start"}
               mt={1}
             >
-              <p>Prix : {annonce.price}$</p>
+              <p>Prix : {annonce.prix}$</p>
               <p>
-                {annonce.full_name} - {annonce.telephone}{" "}
+                {annonce.user.prenom} {annonce.user.nom} - {annonce.telephone}{" "}
               </p>
             </Box>
           </CardContent>
