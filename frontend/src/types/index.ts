@@ -30,6 +30,7 @@ export interface IUser {
   id: string;
   nom: string;
   prenom: string;
+  annonces: IAnnonce[];
   token: string;
 }
 

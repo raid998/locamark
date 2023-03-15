@@ -1,6 +1,11 @@
 import { RequestHandler } from "express";
+import { User } from "../model/user.model";
 import { createAnnonceSchema } from "../schemas/annonce.schema";
-import { createAnnonce, getAllAnnonces } from "../services/annonce.service";
+import {
+  createAnnonce,
+  getAllAnnonces,
+  pushAnnonce,
+} from "../services/annonce.service";
 import { signUser } from "../services/auth.service";
 
 export const createAnnonceController: RequestHandler = async (
@@ -19,11 +24,15 @@ export const createAnnonceController: RequestHandler = async (
 
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
-    const annonce = await createAnnonce(annonceData.data, user);
+    const annonce = await createAnnonce(
+      annonceData.data,
+      await User.findOne({ email: user._doc.email })
+    );
+    await pushAnnonce(annonce, user._doc.email);
 
     return res.send({
       message: "Annonce créée avec succès",
-      user: await signUser(user.email), // ça pourrait changer
+      user: await signUser(user._doc.email), // ça pourrait changer
     });
   } catch (error) {
     next(error);

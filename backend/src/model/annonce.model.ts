@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-interface IAnnonce {
+export interface IAnnonce {
   titre: string;
   telephone: string;
   adresse: string;

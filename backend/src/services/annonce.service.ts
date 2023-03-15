@@ -1,21 +1,31 @@
-import { Annonce } from "../model/annonce.model";
+import { User } from "../model/user.model";
+import { Document, Types } from "mongoose";
+import { Annonce, IAnnonce } from "../model/annonce.model";
 import type { CreateAnnonceInput } from "../schemas/annonce.schema";
 
-export const createAnnonce: (
-  data: CreateAnnonceInput,
-  user: any
-) => Promise<boolean> = async (data: CreateAnnonceInput, user: any) => {
-  try {
-    const annonce = new Annonce({ ...data, user: user._id });
-    // Rajouter traitement sauvegarde d'images
-    await annonce.save();
-    user.annonces.push(annonce.id);
-    await user.save();
-    return true;
-  } catch {
-    return false;
-  }
+export const createAnnonce = async (data: CreateAnnonceInput, user: any) => {
+  const annonce = new Annonce({
+    ...data,
+    codePostal: data.code_postal,
+    user: user.id,
+  });
+  return annonce.save();
 };
+
 export const getAllAnnonces = () => {
   return Annonce.find().populate({ path: "user" }).exec();
+};
+
+export const pushAnnonce = async (
+  annonce: Document<unknown, {}, IAnnonce> &
+    Omit<
+      IAnnonce & {
+        _id: Types.ObjectId;
+      },
+      never
+    >,
+  email: any
+) => {
+  const user = await User.findOne({ email });
+  return user?.save();
 };

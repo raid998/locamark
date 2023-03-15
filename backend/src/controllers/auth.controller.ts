@@ -37,6 +37,7 @@ export const authController: RequestHandler = async (req, res, next) => {
         nom: signedUser.nom,
         prenom: signedUser.prenom,
         token: signedUser.token,
+        annonces: signedUser.annonces,
       },
     });
   } catch (err) {
