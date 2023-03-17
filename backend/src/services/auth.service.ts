@@ -27,7 +27,6 @@ export const signUser = async (email: string) => {
       email,
       nom: user.nom,
       prenom: user.prenom,
-      annonces: user.annonces,
     },
     "1d"
   );
@@ -37,7 +36,6 @@ export const signUser = async (email: string) => {
     nom: user.nom,
     prenom: user.prenom,
     token,
-    annonces: user.annonces,
   };
 };
 

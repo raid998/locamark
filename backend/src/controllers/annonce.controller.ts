@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import mongoose from "mongoose";
 import { User } from "../model/user.model";
 import { createAnnonceSchema } from "../schemas/annonce.schema";
 import {
@@ -51,3 +52,15 @@ export const getAllAnnoncesController: RequestHandler = async (
     next(err);
   }
 };
+
+export const getAnnoncesById: RequestHandler = async (req, res, next) => {
+  try {
+  const id = req.params.id
+  
+  const user = await User.findById(id).populate({path: "annonces"}).exec();
+  return res.send(user?.annonces)
+}
+  catch (err) {
+    next(err)
+  }
+}

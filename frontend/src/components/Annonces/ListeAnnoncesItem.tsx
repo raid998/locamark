@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 import { IAnnonce } from "../../types";
 import { theme } from "../../utils/theme";
 import "./listeAnnonces.css";
@@ -28,16 +29,16 @@ const Annonce = ({ annonce }: { annonce: IAnnonce }) => {
           marginBottom: 1,
         }}
       >
-        <CardMedia
+        <Link style={{textDecoration: 'none'}} to={ annonce._id}> <CardMedia
           component="img"
           sx={{ width: 251 }}
           image={annonce.photos ? annonce.photos[0] : ""}
           alt="Live from space album cover"
-        />
+        /></Link>
 
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ /*flex: '1 0 auto',*/ maxHeight: "60%" }}>
-            <Typography
+          <Link style={{textDecoration: 'none'}} to={annonce._id}><Typography
               component="div"
               variant="h6"
               sx={{
@@ -48,7 +49,7 @@ const Annonce = ({ annonce }: { annonce: IAnnonce }) => {
               }}
             >
               {annonce.titre}{" "}
-            </Typography>
+            </Typography></Link>
             <Typography
               variant="caption"
               component="div"

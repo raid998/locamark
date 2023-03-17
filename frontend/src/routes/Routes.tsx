@@ -3,7 +3,7 @@ import Annonce from "../components/Annonce/Annonce";
 import Connexion from "../components/Connexion/Connexion";
 import Inscription from "../components/Inscription/Inscription";
 import ListeAnnonces from "../pages/Annonces/ListeAnnonces";
-import MesAnnonces from "../pages/MesAnnonces/ListeAnnonces";
+import MesAnnonces from "../pages/MesAnnonces/MesAnnonces";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import { UserState } from "../types";
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllAnnoncesRequest } from "../requests/getRequests";
+import { getAllAnnoncesRequest, getMesAnnoncesRequest } from "../requests/getRequests";
 import { AnnonceState } from "../types";
 import { createAnnonceRequest } from "../requests/postRequests";
 import { create } from "domain";
@@ -27,10 +27,21 @@ export const createAnnonce = createAsyncThunk(
   }
 );
 
+export const getMesAnnonces = createAsyncThunk("annonce/getMesAnnonces", async (id: string) => {
+  const response = await getMesAnnoncesRequest(id);
+  return response.data;
+})
+
 export const annonceSlice = createSlice({
   name: "annonce",
   initialState,
-  reducers: {},
+  reducers: {
+    clearAnnonces: (state) => {
+      state.annonces = []
+      state.loading = false
+      state.error = null
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -60,8 +71,23 @@ export const annonceSlice = createSlice({
       })
       .addCase(createAnnonce.pending, (state) => {
         state.loading = true;
-      });
+      })
+      .addCase(getMesAnnonces.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getMesAnnonces.fulfilled, (state, action:PayloadAction<AnnonceState["annonces"]>) => {
+        console.log(action.payload)
+        state.loading = false;
+        state.error = null
+        state.annonces = action.payload
+      })
+      .addCase(getMesAnnonces.rejected, (state) => {
+        state.loading = false
+        state.error = "Erreur lors de la récuperation de vos annonces"
+      })
   },
 });
 
 export default annonceSlice.reducer;
+
+export const {clearAnnonces} = annonceSlice.actions

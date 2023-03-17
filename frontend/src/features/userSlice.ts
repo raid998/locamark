@@ -26,6 +26,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      
       localStorage.removeItem("user");
       state.user = null;
       state.error = "";

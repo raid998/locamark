@@ -1,14 +1,18 @@
 import { Typography, Pagination } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import ListAnnoncesItem from "../../components/Annonces/ListeAnnoncesItem";
-import { getAllAnnonces } from "../../features/annonceSlice";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { getAllAnnonces, getMesAnnonces } from "../../features/annonceSlice";
+import { store, useAppDispatch, useAppSelector } from "../../store";
 
 const MesAnnonces = () => {
   const dispatch = useAppDispatch();
-  const annonces = useAppSelector((state) => state.user?.user?.annonces || []);
-
+  const {annonces} = useAppSelector((state) => state.annonces || []);
+  useEffect(() => {
+    console.log(store.getState().user.user?.id)
+    dispatch(getMesAnnonces(store.getState().user.user?.id || ""))
+  }, [dispatch])
   return (
     <>
       <Box
@@ -27,8 +31,8 @@ const MesAnnonces = () => {
             Liste des annonces
           </Typography>
         </Container>
-        {annonces.map((annonce, index) => (
-          <ListAnnoncesItem key={annonce._id} annonce={annonce} />
+        {annonces.length && annonces.map((annonce) => (
+         <ListAnnoncesItem key={annonce._id} annonce={annonce} />
         ))}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
           <Pagination count={3} shape="rounded" />
