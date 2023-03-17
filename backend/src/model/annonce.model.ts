@@ -6,6 +6,9 @@ interface IAnnonce {
   complement?: string;
   codePostal: string;
   ville: string;
+  description: string;
+  photos?: string[];
+  user: { type: Schema.Types.ObjectId; ref: "User" };
 }
 
 const annonceSchema = new Schema<IAnnonce>({
@@ -14,6 +17,9 @@ const annonceSchema = new Schema<IAnnonce>({
   complement: { type: String },
   codePostal: { type: String, required: true },
   ville: { type: String, required: true },
+  description: { type: String, required: true },
+  photos: { type: [String], required: false },
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-const Annonce = model<IAnnonce>("Annonce", annonceSchema);
+export const Annonce = model<IAnnonce>("Annonce", annonceSchema);

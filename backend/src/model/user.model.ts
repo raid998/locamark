@@ -1,10 +1,11 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-interface IUser {
+export interface IUser extends Document {
   nom: string;
   prenom: string;
   email: string;
   password: string;
+  annonces?: [{ type: Schema.Types.ObjectId; ref: "Annnonce" }];
 }
 
 const userSchema = new Schema<IUser>({
@@ -12,6 +13,7 @@ const userSchema = new Schema<IUser>({
   prenom: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  annonces: [{ type: Schema.Types.ObjectId, ref: "Annnonce" }],
 });
 
 export const User = model<IUser>("User", userSchema);

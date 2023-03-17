@@ -13,40 +13,51 @@ import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import { Link as RouterLink } from "react-router-dom";
-
-type NavBarItemType = {
-  titre: string;
-  lien: string;
-}[];
+import { NavBarItemType, settingsType } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { logout } from "../../features/userSlice";
 
 const pages: NavBarItemType = [
   { titre: "Demandes de service", lien: "/annonces" },
   { titre: "Voir les prestations", lien: "/prestations" },
-  { titre: "Connexion", lien: "/connexion" },
-  { titre: "Inscription", lien: "/inscription" },
 ];
 
-const settings = ["Profil", "Compte", "Dashboard", "Déconnexion"];
-
 const NavBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
-  )
+  );
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+    setAnchorElNav(null);
+  };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+    setAnchorElUser(null);
+  };
+
+  const loggedInSettings: settingsType = [
+    { titre: "Profil", action: () => {} },
+    { titre: "Compte", action: () => {} },
+    { titre: "Dashboard", action: () => {} },
+    {
+      titre: "Déconnexion",
+      action: () => {
+        dispatch(logout());
+      },
+    },
+  ];
 
   return (
     <AppBar
@@ -57,144 +68,210 @@ const NavBar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
-            component='a'
-            href='/'
+            component="a"
+            href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             LOCAMARK
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color='inherit'
+              color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id='menu-appbar'
+              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page, i) => (
-                <MenuItem key={i} onClick={handleCloseNavMenu}>
-                  <Link
-                    component={RouterLink}
-                    to={page.lien}
-                    sx={{
-                      textDecoration: "none",
-                      color: "#333",
-                    }}
-                  >
-                    <Typography textAlign="center">{page.titre}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+              {user &&
+                pages.map((page, i) => (
+                  <MenuItem key={i}>
+                    <Link
+                      component={RouterLink}
+                      to={page.lien}
+                      sx={{
+                        textDecoration: "none",
+                        color: "#333",
+                      }}
+                    >
+                      <Typography textAlign="center">{page.titre}</Typography>
+                    </Link>
+                  </MenuItem>
+                ))}
+              {!user && (
+                <>
+                  <MenuItem>
+                    <Link
+                      component={RouterLink}
+                      to="/connexion"
+                      sx={{ textDecoration: "none", color: "#333" }}
+                    >
+                      <Typography textAlign="center">Connexion</Typography>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      component={RouterLink}
+                      to="/inscription"
+                      sx={{ textDecoration: "none", color: "#333" }}
+                    >
+                      <Typography textAlign="center">Inscription</Typography>
+                    </Link>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant='h5'
+            variant="h5"
             noWrap
-            component='a'
-            href=''
+            component="a"
+            href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             LOCAMARK
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page, i) => (
-              <Button
-                key={i}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Link
-                  component={RouterLink}
-                  to={page.lien}
-                  color={"#333"}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: !user ? "flex-end" : "flex-start",
+            }}
+          >
+            {user &&
+              pages.map((page, i) => (
+                <Button
+                  key={i}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  <Link
+                    component={RouterLink}
+                    to={page.lien}
+                    color={"#333"}
+                    sx={{
+                      textDecoration: "none",
+                      backgroundColor: "primary.main",
+                    }}
+                  >
+                    <Typography textAlign="center">{page.titre}</Typography>
+                  </Link>
+                </Button>
+              ))}
+            {!user && (
+              <>
+                <Button
                   sx={{
-                    textDecoration: "none",
-                    backgroundColor: "primary.main",
+                    my: 2,
+                    color: "white",
+                    display: "block",
                   }}
                 >
-                  <Typography textAlign="center">{page.titre}</Typography>
-                </Link>
-              </Button>
-            ))}
+                  <Link
+                    component={RouterLink}
+                    to="/connexion"
+                    sx={{ textDecoration: "none", color: "#333" }}
+                  >
+                    <Typography textAlign="center">Connexion</Typography>
+                  </Link>
+                </Button>
+                <Button
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                  }}
+                >
+                  <Link
+                    component={RouterLink}
+                    to="/inscription"
+                    sx={{ textDecoration: "none", color: "#333" }}
+                  >
+                    <Typography textAlign="center">Inscription</Typography>
+                  </Link>
+                </Button>
+              </>
+            )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {user && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {loggedInSettings.map((setting, i) => (
+                  <MenuItem key={i} onClick={setting.action}>
+                    <Typography textAlign="center">{setting.titre}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

@@ -1,14 +1,18 @@
-import express, { Express, json } from "express";
+import express, { Express, json, urlencoded } from "express";
 import dotenv from "dotenv";
 import routes from "./routes";
 import { logger } from "./middlewares/logger.middleware";
 import { db } from "./db/db";
-
+import cors from "cors";
+import { deserializeUser } from "./middlewares/deserializeUser.middleware";
 const app: Express = express();
 dotenv.config();
 
+app.use(cors());
 app.use(json());
+app.use(urlencoded({ extended: true }));
 app.use(logger);
+app.use(deserializeUser);
 db();
 app.use("/api", routes);
 

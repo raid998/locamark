@@ -4,48 +4,41 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { z, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-
-const registerSchema = z.object({
-  nom: z.string().max(20).min(1, { message: "Veuillez entrer votre nom" }),
-  prenom: z
-    .string()
-    .max(20)
-    .min(1, { message: "Veuillez entrer votre prénom" }),
-  email: z.string().email({ message: "Veuillez entrer votre email" }),
-  password: z
-    .string()
-    .max(32)
-    .min(8, { message: "Veuillez entrer un mot de passe" }),
-});
-
-type RegisterInput = TypeOf<typeof registerSchema>;
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
+import { registerRequest } from "../../requests/postRequests";
+import { registerSchema, RegisterSchema } from "../../schemas/user.schema";
 
 const Inscription = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const {
     register,
-    formState: { errors, isSubmitSuccessful },
-    reset,
+    formState: { errors },
     handleSubmit,
-  } = useForm<RegisterInput>({
+  } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
+  const onSubmitHandler: SubmitHandler<RegisterSchema> = async (values) => {
+    setLoading(true);
+    try {
+      const response = await registerRequest(values);
+      setLoading(false);
+      toast.success(response.data.message);
+      navigate("/connexion");
+    } catch (error: any) {
+      setLoading(false);
+      toast.error(
+        error.response?.data.message || "Problème lors de l'inscription"
+      );
     }
-  }, [isSubmitSuccessful]);
-
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
   };
-  console.log(errors);
 
   return (
     <Box
@@ -103,6 +96,7 @@ const Inscription = () => {
           label="Mot de passe"
           error={!!errors["password"]}
           helperText={errors["password"] ? errors["password"].message : ""}
+          type="password"
           {...register("password")}
         />
         <Button
@@ -110,6 +104,7 @@ const Inscription = () => {
           type="submit"
           variant="contained"
           sx={{ mt: 3, mb: 3 }}
+          startIcon={loading ? <CircularProgress /> : <></>}
         >
           S'inscrire
         </Button>

@@ -4,43 +4,39 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { z, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-
-const registerSchema = z.object({
-  email: z.string().email({ message: "Veuillez entrer un email valide" }),
-  password: z
-    .string()
-    .max(32)
-    .min(8, { message: "Veuillez entrer votre mot de passe" }),
-});
-
-type RegisterInput = TypeOf<typeof registerSchema>;
+import { useAppDispatch, useAppSelector } from "../../store";
+import { login } from "../../features/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
+import { LoginSchema, loginSchema } from "../../schemas/user.schema";
 
 const Authentification = () => {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
 
   const {
     register,
-    formState: { errors, isSubmitSuccessful },
-    reset,
+    formState: { errors },
     handleSubmit,
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
   });
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful]);
+  const onSubmitHandler: SubmitHandler<LoginSchema> = async (values) => {
+    try {
+      const user = await dispatch(login(values)).unwrap();
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Connexion réussie!");
+      navigate("/");
+    } catch {
+      toast.error("Les coordonnées que vous avez saisies sont erronées.");
+    }
   };
-  console.log(errors);
 
   return (
     <Box
@@ -78,6 +74,7 @@ const Authentification = () => {
           id="password"
           label="Mot de passe"
           variant="outlined"
+          type="password"
           error={!!errors["password"]}
           helperText={errors["password"] ? errors["password"].message : ""}
           {...register("password")}
@@ -87,6 +84,7 @@ const Authentification = () => {
           type="submit"
           variant="contained"
           sx={{ mt: 3, mb: 3 }}
+          startIcon={user.loading ? <CircularProgress /> : <></>}
         >
           Se connecter
         </Button>

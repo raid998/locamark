@@ -1,8 +1,10 @@
 import { RequestHandler } from "express";
-import bcrypt from "bcrypt";
-import { User } from "../model/user.model";
-import { registerSchema, loginSchema } from "../schema/user.schema";
-import { signJwt } from "../utils/jwt";
+import { registerSchema, loginSchema } from "../schemas/user.schema";
+import {
+  comparePasswords,
+  createUtilisateur,
+  signUser,
+} from "../services/auth.service";
 
 export const authController: RequestHandler = async (req, res, next) => {
   try {
@@ -13,34 +15,28 @@ export const authController: RequestHandler = async (req, res, next) => {
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
 
-    const user = await User.findOne({ email: loginData.data.email });
-    if (!user)
-      return res.status(404).send({
-        message: "Les coordonnées que vous avez saisies sont erronées.",
-      });
-
-    const passwordCorrect = await bcrypt.compare(
-      loginData.data.password,
-      user.password
+    const passwordCorrect = comparePasswords(
+      loginData.data.email,
+      loginData.data.password
     );
     if (!passwordCorrect)
       return res.status(404).send({
         message: "Les coordonnées que vous avez saisies sont erronées.",
       });
 
-    const signedUser = signJwt(
-      { id: user.id, email: user.email, nom: user.nom, prenom: user.prenom },
-      "1d"
-    );
-
+    const signedUser = await signUser(loginData.data.email);
+    if (!signedUser)
+      return res.status(404).send({
+        message: "Les coordonnées que vous avez saisies sont erronées.",
+      });
     return res.send({
       message: "Connexion réussie",
       data: {
-        id: user.id,
-        email: user.email,
-        nom: user.nom,
-        prenom: user.prenom,
-        token: signedUser,
+        id: signedUser.id,
+        email: signedUser.email,
+        nom: signedUser.nom,
+        prenom: signedUser.prenom,
+        token: signedUser.token,
       },
     });
   } catch (err) {
@@ -56,9 +52,7 @@ export const registerController: RequestHandler = async (req, res, next) => {
         message:
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
-    const hash = await bcrypt.hash(user.data.password, 10);
-    const newUser = new User({ ...user.data, password: hash });
-    await newUser.save();
+    await createUtilisateur(user.data);
     return res.status(201).send({ message: "Utilisateur créé avec succès" });
   } catch (err) {
     next(err);

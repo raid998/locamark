@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { TypeOf, z } from "zod";
 
 export const registerSchema = z.object({
   nom: z.string().max(20).min(1, { message: "Veuillez entrer votre nom" }),
@@ -20,3 +20,6 @@ export const loginSchema = z.object({
     .max(32)
     .min(8, { message: "Veuillez entrer votre mot de passe" }),
 });
+
+export type LoginSchema = TypeOf<typeof loginSchema>;
+export type RegisterSchema = TypeOf<typeof registerSchema>;
