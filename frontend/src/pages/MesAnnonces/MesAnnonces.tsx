@@ -1,9 +1,8 @@
 import { Typography, Pagination } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import ListAnnoncesItem from "../../components/Annonces/ListeAnnoncesItem";
-import { getAllAnnonces, getMesAnnonces } from "../../features/annonceSlice";
+import { getMesAnnonces } from "../../features/annonceSlice";
 import { store, useAppDispatch, useAppSelector } from "../../store";
 
 const MesAnnonces = () => {

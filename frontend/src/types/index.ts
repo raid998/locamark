@@ -17,7 +17,7 @@ export interface IAnnonce {
   prix: number;
   createdAt?: Date;
   user: IUser;
-}
+} 
 
 export interface UserState {
   user: IUser | null;

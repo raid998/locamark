@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Annonce = () => {
+const AddAnnonce = () => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.annonces);
   const navigate = useNavigate();
@@ -287,4 +287,4 @@ const Annonce = () => {
   );
 };
 
-export default Annonce;
+export default AddAnnonce;

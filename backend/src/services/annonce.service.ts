@@ -29,3 +29,7 @@ export const pushAnnonce = async (
   const user = await User.findOne({ email });
   return user?.save();
 };
+
+export const getAnnonceById = (id: string) => {
+  return Annonce.findById(id).populate({path: 'user'}).exec();
+}

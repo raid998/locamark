@@ -1,10 +1,11 @@
-import { RequestHandler } from "express";
-import mongoose from "mongoose";
+import { NextFunction, RequestHandler } from "express";
+import { getUserById } from "../services/user.service";
 import { User } from "../model/user.model";
 import { createAnnonceSchema } from "../schemas/annonce.schema";
 import {
   createAnnonce,
   getAllAnnonces,
+  getAnnonceById,
   pushAnnonce,
 } from "../services/annonce.service";
 import { signUser } from "../services/auth.service";
@@ -53,14 +54,25 @@ export const getAllAnnoncesController: RequestHandler = async (
   }
 };
 
-export const getAnnoncesById: RequestHandler = async (req, res, next) => {
+export const getAnnoncesByUserIdController: RequestHandler = async (req, res, next) => {
   try {
   const id = req.params.id
   
-  const user = await User.findById(id).populate({path: "annonces"}).exec();
+  const user = await getUserById(id).populate({path: "annonces"}).exec();
   return res.send(user?.annonces)
 }
   catch (err) {
     next(err)
   }
+}
+
+export const getAnnonceByIdController : RequestHandler = async (req, res, next: NextFunction) => {
+  try {
+    const id = req.params.id
+    const annonce = await getAnnonceById(id)
+    return res.send(annonce)
+  } catch (err) {
+    return next(err)
+  }
+
 }
