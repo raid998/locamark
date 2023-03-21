@@ -9,6 +9,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Divider } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -38,7 +39,7 @@ export default function SideBar({ routes }: SideBarProps) {
     sideBarSections.map((section) =>
       setSideBarElementsStates((elements) => ({
         ...elements,
-        [section.nom]: false,
+        [section.nom]: true,
       }))
     );
   }, []);
@@ -87,12 +88,22 @@ export default function SideBar({ routes }: SideBarProps) {
               >
                 <List component="div" disablePadding>
                   {section.subElements.map((element, index) => (
-                    <Link to={element.lien} key={index}>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        {" "}
-                        <ListItemText primary={element.titre} />
-                      </ListItemButton>
-                    </Link>
+                    <>
+                      <Link
+                        to={element.lien}
+                        key={index}
+                        style={{
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          {" "}
+                          <ListItemText primary={element.titre} />
+                        </ListItemButton>
+                      </Link>
+                      <Divider />
+                    </>
                   ))}
                 </List>
               </Collapse>
