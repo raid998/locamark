@@ -16,6 +16,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { NavBarItemType, settingsType } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../../features/userSlice";
+import { clearAnnonces } from "../../features/annonceSlice";
 
 const pages: NavBarItemType = [
   { titre: "Demandes de service", lien: "/annonces" },
@@ -55,6 +56,7 @@ const NavBar = () => {
       titre: "Déconnexion",
       action: () => {
         dispatch(logout());
+        dispatch(clearAnnonces())
       },
     },
   ];

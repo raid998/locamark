@@ -1,8 +1,22 @@
-import { RequestHandler } from "express";
-import { createAnnonceSchema } from "schemas/annonce.schema";
-import { createAnnonce } from "services/annonce.service";
+import { NextFunction, RequestHandler } from "express";
+import { getUserById } from "../services/user.service";
+import { User } from "../model/user.model";
+import { createAnnonceSchema } from "../schemas/annonce.schema";
+import {
+  createAnnonce,
+  deleteAnnonce,
+  getAllAnnonces,
+  getAnnonceById,
+  pushAnnonce,
+  updateAnnonce,
+} from "../services/annonce.service";
+import { signUser } from "../services/auth.service";
 
-export const annonceController: RequestHandler = async (req, res, next) => {
+export const createAnnonceController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     // Extraire les données reçues de l'annonce
     const annonceData = createAnnonceSchema.safeParse(req.body);
@@ -14,10 +28,85 @@ export const annonceController: RequestHandler = async (req, res, next) => {
 
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
-    const annonce = createAnnonce(annonceData.data, user);
-    // Associer la nouvelle annonce à l'utilisateur connecté
-    // Sauvegarder la nouvelle entité
+    const annonce = await createAnnonce(
+      annonceData.data,
+      await User.findOne({ email: user._doc.email })
+    );
+    await pushAnnonce(annonce, user._doc.email);
+
+    return res.send({
+      message: "Annonce créée avec succès",
+      user: await signUser(user._doc.email), // ça pourrait changer
+    });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getAllAnnoncesController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const annonces = await getAllAnnonces();
+    return res.send(annonces);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAnnoncesByUserIdController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const id = req.params.id;
+
+    const user = await getUserById(id)
+      .populate({ path: "annonces", populate: { path: "user" } })
+      .exec();
+
+    return res.send(user?.annonces);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAnnonceByIdController: RequestHandler = async (
+  req,
+  res,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const annonce = await getAnnonceById(id);
+    return res.send(annonce);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const editAnnonceController: RequestHandler = async (
+  req,
+  res,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  const updateStatus = await updateAnnonce(data, id);
+  if (updateStatus) return res.sendStatus(200);
+  return res.sendStatus(400);
+};
+
+export const deleteAnnonceController: RequestHandler = async (req, res) => {
+  const annonceId = req.params.id;
+  try {
+    await deleteAnnonce(annonceId);
+    res.sendStatus(200);
+  } catch {
+    res.sendStatus(500);
   }
 };

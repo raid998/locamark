@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "./features/userSlice";
+import annonceReducer from "./features/annonceSlice";
 
 export const store = configureStore({
-  reducer: { user: userReducer },
+  reducer: { user: userReducer, annonces: annonceReducer },
   devTools: true,
 });
 

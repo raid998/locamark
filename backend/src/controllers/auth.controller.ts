@@ -23,7 +23,6 @@ export const authController: RequestHandler = async (req, res, next) => {
       return res.status(404).send({
         message: "Les coordonnées que vous avez saisies sont erronées.",
       });
-
     const signedUser = await signUser(loginData.data.email);
     if (!signedUser)
       return res.status(404).send({

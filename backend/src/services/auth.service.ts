@@ -1,7 +1,7 @@
-import { IUser, User } from "../model/user.model";
 import bcrypt from "bcrypt";
 import { signJwt } from "../utils/jwt";
-import { RegisterSchema } from "schemas/user.schema";
+import { RegisterSchema } from "../schemas/user.schema";
+import { User } from "../model/user.model";
 
 export const comparePasswords = async (
   email: string,
@@ -17,13 +17,26 @@ export const comparePasswords = async (
 };
 
 export const signUser = async (email: string) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email })
+    .populate({ path: "annonces", populate: { path: "user" } })
+    .exec();
   if (!user) return null;
   const token = signJwt(
-    { id: user.id, email, nom: user.nom, prenom: user.prenom },
+    {
+      id: user.id,
+      email,
+      nom: user.nom,
+      prenom: user.prenom,
+    },
     "1d"
   );
-  return { id: user.id, email, nom: user.nom, prenom: user.prenom, token };
+  return {
+    id: user.id,
+    email,
+    nom: user.nom,
+    prenom: user.prenom,
+    token,
+  };
 };
 
 export const createUtilisateur = async (

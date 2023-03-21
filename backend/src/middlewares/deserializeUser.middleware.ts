@@ -11,10 +11,12 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
   try {
     const decodedUser = <Partial<IUser>>verifyJwt(token);
     const user = await User.findOne({ email: decodedUser.email });
+
     if (!user) {
       return next();
     }
-    res.locals.user = user;
+    res.locals.user = { ...user.toObject(), token };
+
     return next();
   } catch {
     return next();
