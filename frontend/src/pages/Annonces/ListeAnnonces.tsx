@@ -30,8 +30,8 @@ const ListeAnnonces = () => {
             Liste des annonces
           </Typography>
         </Container>
-        {annonces.map((annonce, index) => (
-          <ListAnnoncesItem key={annonce._id} annonce={annonce} />
+        {annonces.map((annonce) => (
+          <ListAnnoncesItem key={annonce._id} annonce={annonce} edit={false} />
         ))}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
           <Pagination count={3} shape="rounded" />

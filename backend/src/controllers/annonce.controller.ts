@@ -4,6 +4,7 @@ import { User } from "../model/user.model";
 import { createAnnonceSchema } from "../schemas/annonce.schema";
 import {
   createAnnonce,
+  deleteAnnonce,
   getAllAnnonces,
   getAnnonceById,
   pushAnnonce,
@@ -55,35 +56,57 @@ export const getAllAnnoncesController: RequestHandler = async (
   }
 };
 
-export const getAnnoncesByUserIdController: RequestHandler = async (req, res, next) => {
+export const getAnnoncesByUserIdController: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
-  const id = req.params.id
-  
-  const user = await getUserById(id).populate({path: "annonces"}).exec();
-  return res.send(user?.annonces)
-}
-  catch (err) {
-    next(err)
-  }
-}
+    const id = req.params.id;
 
-export const getAnnonceByIdController : RequestHandler = async (req, res, next: NextFunction) => {
-  try {
-    const id = req.params.id
-    const annonce = await getAnnonceById(id)
-    return res.send(annonce)
+    const user = await getUserById(id)
+      .populate({ path: "annonces", populate: { path: "user" } })
+      .exec();
+
+    return res.send(user?.annonces);
   } catch (err) {
-    return next(err)
+    next(err);
   }
+};
 
-}
+export const getAnnonceByIdController: RequestHandler = async (
+  req,
+  res,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const annonce = await getAnnonceById(id);
+    return res.send(annonce);
+  } catch (err) {
+    return next(err);
+  }
+};
 
-export const editAnnonceController: RequestHandler = async (req, res, next: NextFunction) => {
-const id = req.params.id
-const data = req.body
+export const editAnnonceController: RequestHandler = async (
+  req,
+  res,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+  const data = req.body;
 
-const updateStatus = await updateAnnonce(data, id)
-if(updateStatus) return res.sendStatus(200)
-return res.sendStatus(400)
+  const updateStatus = await updateAnnonce(data, id);
+  if (updateStatus) return res.sendStatus(200);
+  return res.sendStatus(400);
+};
 
-}
+export const deleteAnnonceController: RequestHandler = async (req, res) => {
+  const annonceId = req.params.id;
+  try {
+    await deleteAnnonce(annonceId);
+    res.sendStatus(200);
+  } catch {
+    res.sendStatus(500);
+  }
+};

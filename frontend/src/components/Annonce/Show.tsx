@@ -1,36 +1,33 @@
 import { Container } from "@mui/system";
 import "react-quill/dist/quill.snow.css";
-import {  FormControl, Grid, Typography } from "@mui/material";
+import { FormControl, Grid, Typography } from "@mui/material";
 import "./annonces.css";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import  { toast } from 'react-toastify'
-import { useAppDispatch, useAppSelector } from "../../store";
-import {  useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IAnnonce } from "../../types";
 import { getAnnonceContentRequest } from "../../requests/getRequests";
 
 const ShowAnnonce = () => {
-    const {id} = useParams()
-    const [annonce, setAnnonce] = useState<Partial<IAnnonce>>({})
+  const { id } = useParams();
+  const [annonce, setAnnonce] = useState<Partial<IAnnonce>>({});
 
-   
-
-    useEffect( () => {
-        
-            getAnnonceContentRequest(id as string).then(response => {
-                setAnnonce(response.data)
-            }).catch(()=> {
-                toast.error("erreur lors de la récupération des informations de l'annonce")
-            })
-       
-    }, [])
+  useEffect(() => {
+    getAnnonceContentRequest(id as string)
+      .then((response) => {
+        setAnnonce(response.data);
+      })
+      .catch(() => {
+        toast.error(
+          "erreur lors de la récupération des informations de l'annonce"
+        );
+      });
+  }, []);
 
   return (
-    <Container
-      sx={{ margin: "1rem auto" }}
-    >
+    <Container sx={{ margin: "1rem auto" }}>
       <Box className="annonce-item">
         <FormControl className="annonce-item-element">
           <Typography variant="h2">{annonce.titre}</Typography>
@@ -133,7 +130,6 @@ const ShowAnnonce = () => {
               </Paper>
             </Grid>
           </Box>
-         
         </Grid>
       </Box>
       <Box className="annonce-item">
@@ -146,15 +142,14 @@ const ShowAnnonce = () => {
           justifyContent="flex-start"
           maxWidth={"40%"}
         >
-         {annonce.adresse} <br/>
-         {annonce.complement}
+          {annonce.adresse} <br />
+          {annonce.complement}
           <Grid
             flexDirection={"row"}
             container
             justifyContent={"space-between"}
           >
             {annonce.codePostal} - {annonce.ville}
-            
           </Grid>
         </Grid>
       </Box>
@@ -170,7 +165,6 @@ const ShowAnnonce = () => {
         </Typography>
         {annonce.user?.prenom} {annonce.user?.nom} - {annonce.telephone}
       </Box>
-     
     </Container>
   );
 };

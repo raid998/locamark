@@ -31,13 +31,19 @@ export const pushAnnonce = async (
 };
 
 export const getAnnonceById = (id: string) => {
-  return Annonce.findById(id).populate({path: 'user'}).exec();
-}
+  return Annonce.findById(id).populate({ path: "user" }).exec();
+};
 
 export const updateAnnonce = async (data: IAnnonce, id: string) => {
-    try {
-      await Annonce.findByIdAndUpdate(id, data) 
-      return true; } 
-      catch {
-        return false}
+  try {
+    await Annonce.findByIdAndUpdate(id, data);
+    return true;
+  } catch {
+    return false;
   }
+};
+
+export const deleteAnnonce = async (id: string) => {
+  const annonce = await Annonce.findById(id);
+  await annonce?.deleteOne();
+};

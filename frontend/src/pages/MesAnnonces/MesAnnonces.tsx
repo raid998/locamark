@@ -7,10 +7,10 @@ import { store, useAppDispatch, useAppSelector } from "../../store";
 
 const MesAnnonces = () => {
   const dispatch = useAppDispatch();
-  const {annonces} = useAppSelector((state) => state.annonces || []);
+  const { annonces } = useAppSelector((state) => state.annonces || []);
   useEffect(() => {
-    dispatch(getMesAnnonces(store.getState().user.user?.id || ""))
-  }, [dispatch])
+    dispatch(getMesAnnonces(store.getState().user.user?.id || ""));
+  }, [dispatch]);
   return (
     <>
       <Box
@@ -29,8 +29,8 @@ const MesAnnonces = () => {
             Liste des annonces
           </Typography>
         </Container>
-        {annonces.length && annonces.map((annonce) => (
-         <ListAnnoncesItem key={annonce._id} annonce={annonce} />
+        {annonces.map((annonce) => (
+          <ListAnnoncesItem key={annonce._id} annonce={annonce} edit={true} />
         ))}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
           <Pagination count={3} shape="rounded" />

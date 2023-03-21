@@ -13,3 +13,7 @@ export const registerRequest = (data: RegisterSchema) => {
 export const createAnnonceRequest = (data: CreateAnnonceInput) => {
   return axiosPrivate.post("/annonces", data);
 };
+
+export const checkAnnoncePermission = (id: string) => {
+  return axiosPrivate.post("/annonces/" + id);
+};
