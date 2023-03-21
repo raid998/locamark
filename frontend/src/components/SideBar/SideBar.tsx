@@ -23,16 +23,6 @@ const sideBarSections: SideBarItemsType = [
     subElements: [
       { titre: "Nouvelle annonce", lien: "/annonces/ajouter" },
       { titre: "Mes annonces", lien: "/mes-annonces" },
-      { titre: "Mes propositions reçues", lien: "/" },
-    ],
-  },
-
-  {
-    nom: "Prestataire",
-    subElements: [
-      { titre: "Nouveau service", lien: "/" },
-      { titre: "Mes services", lien: "/" },
-      { titre: "Mes demandes reçues", lien: "/" },
     ],
   },
 ];

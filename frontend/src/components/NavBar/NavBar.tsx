@@ -20,7 +20,6 @@ import { clearAnnonces } from "../../features/annonceSlice";
 
 const pages: NavBarItemType = [
   { titre: "Demandes de service", lien: "/annonces" },
-  { titre: "Voir les prestations", lien: "/prestations" },
 ];
 
 const NavBar = () => {
@@ -50,13 +49,11 @@ const NavBar = () => {
 
   const loggedInSettings: settingsType = [
     { titre: "Profil", action: () => {} },
-    { titre: "Compte", action: () => {} },
-    { titre: "Dashboard", action: () => {} },
     {
       titre: "Déconnexion",
       action: () => {
         dispatch(logout());
-        dispatch(clearAnnonces())
+        dispatch(clearAnnonces());
       },
     },
   ];

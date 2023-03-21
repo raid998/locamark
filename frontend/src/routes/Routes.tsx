@@ -11,6 +11,14 @@ import { UserState } from "../types";
 
 const Router = ({ user }: { user: UserState["user"] }) => (
   <Routes>
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute user={user}>
+          <ListeAnnonces />
+        </ProtectedRoute>
+      }
+    />
     <Route path="/connexion" element={<Connexion />} />
     <Route path="/inscription" element={<Inscription />} />
     <Route
