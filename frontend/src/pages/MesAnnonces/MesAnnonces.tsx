@@ -9,7 +9,6 @@ const MesAnnonces = () => {
   const dispatch = useAppDispatch();
   const {annonces} = useAppSelector((state) => state.annonces || []);
   useEffect(() => {
-    console.log(store.getState().user.user?.id)
     dispatch(getMesAnnonces(store.getState().user.user?.id || ""))
   }, [dispatch])
   return (

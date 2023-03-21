@@ -76,7 +76,6 @@ export const annonceSlice = createSlice({
         state.loading = true
       })
       .addCase(getMesAnnonces.fulfilled, (state, action:PayloadAction<AnnonceState["annonces"]>) => {
-        console.log(action.payload)
         state.loading = false;
         state.error = null
         state.annonces = action.payload

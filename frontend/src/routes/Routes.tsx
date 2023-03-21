@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import AddAnnonce from "../components/Annonce/Add";
+import EditAnnonce from "../components/Annonce/Edit";
 import ShowAnnonce from "../components/Annonce/Show";
 import Connexion from "../components/Connexion/Connexion";
 import Inscription from "../components/Inscription/Inscription";
@@ -33,6 +34,14 @@ const Router = ({ user }: { user: UserState["user"] }) => (
       element={
         <ProtectedRoute user={user}>
           <ShowAnnonce />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/annonces/:id/modifier"
+      element={
+        <ProtectedRoute user={user}>
+          <EditAnnonce />
         </ProtectedRoute>
       }
     />

@@ -7,6 +7,7 @@ import {
   getAllAnnonces,
   getAnnonceById,
   pushAnnonce,
+  updateAnnonce,
 } from "../services/annonce.service";
 import { signUser } from "../services/auth.service";
 
@@ -74,5 +75,15 @@ export const getAnnonceByIdController : RequestHandler = async (req, res, next: 
   } catch (err) {
     return next(err)
   }
+
+}
+
+export const editAnnonceController: RequestHandler = async (req, res, next: NextFunction) => {
+const id = req.params.id
+const data = req.body
+
+const updateStatus = await updateAnnonce(data, id)
+if(updateStatus) return res.sendStatus(200)
+return res.sendStatus(400)
 
 }
