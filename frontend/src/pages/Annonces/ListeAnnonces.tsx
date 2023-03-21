@@ -30,9 +30,15 @@ const ListeAnnonces = () => {
             Liste des annonces
           </Typography>
         </Container>
-        {annonces.map((annonce) => (
-          <ListAnnoncesItem key={annonce._id} annonce={annonce} edit={false} />
-        ))}
+        {annonces.length
+          ? annonces.map((annonce) => (
+              <ListAnnoncesItem
+                key={annonce._id}
+                annonce={annonce}
+                edit={false}
+              />
+            ))
+          : "Aucune annonce pour l'instant"}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
           <Pagination count={3} shape="rounded" />
         </Stack>

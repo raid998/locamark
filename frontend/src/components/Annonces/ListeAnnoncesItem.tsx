@@ -53,60 +53,62 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
           marginBottom: 1,
         }}
       >
-        <Box sx={{ position: "absolute", top: 0, right: 2 }}>
-          <Stack direction={"row"} spacing={0}>
-            <IconButton
-              onClick={() => {
-                navigate("/annonces/" + annonce._id + "/modifier");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={handleClickOpen}>
-              <DeleteIcon />
-            </IconButton>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"Voulez-vous vraiment supprimer l'annonce?"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Voulez-vous vraiment supprimer l'annonce?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Non</Button>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="error"
-                  className="annonce-item"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => {
-                    deleteAnnonceRequest(annonce._id as string)
-                      .then(() => {
-                        handleClose();
-                        navigate(0);
-                        toast.success("Annonce supprimée");
-                      })
-                      .catch(() => {
-                        toast.error(
-                          "Erreur lors de la suppression de l'annonce"
-                        );
-                      });
-                  }}
-                >
-                  Supprimer
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Stack>
-        </Box>
+        {edit ? (
+          <Box sx={{ position: "absolute", top: 0, right: 2 }}>
+            <Stack direction={"row"} spacing={0}>
+              <IconButton
+                onClick={() => {
+                  navigate("/annonces/" + annonce._id + "/modifier");
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={handleClickOpen}>
+                <DeleteIcon />
+              </IconButton>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Voulez-vous vraiment supprimer l'annonce?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Voulez-vous vraiment supprimer l'annonce?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Non</Button>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="error"
+                    className="annonce-item"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => {
+                      deleteAnnonceRequest(annonce._id as string)
+                        .then(() => {
+                          handleClose();
+                          navigate(0);
+                          toast.success("Annonce supprimée");
+                        })
+                        .catch(() => {
+                          toast.error(
+                            "Erreur lors de la suppression de l'annonce"
+                          );
+                        });
+                    }}
+                  >
+                    Supprimer
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Stack>
+          </Box>
+        ) : null}
 
         <Link style={{ textDecoration: "none" }} to={annonce._id}>
           {" "}
