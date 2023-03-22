@@ -1,5 +1,6 @@
 export interface AnnonceState {
   annonces: IAnnonce[];
+  count: number
   loading: boolean;
   error: string | null;
 }

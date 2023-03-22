@@ -3,6 +3,8 @@ import { getUserById } from "../services/user.service";
 import { User } from "../model/user.model";
 import { createAnnonceSchema } from "../schemas/annonce.schema";
 import {
+  countAnnonces,
+  countMesAnnonces,
   createAnnonce,
   deleteAnnonce,
   getAllAnnonces,
@@ -49,8 +51,12 @@ export const getAllAnnoncesController: RequestHandler = async (
   next
 ) => {
   try {
-    const annonces = await getAllAnnonces();
-    return res.send(annonces);
+    const page = parseInt(req.query.page as string) || 1
+    const limit = 5
+    const skipIndex = (page - 1)*limit
+    const annonces = await getAllAnnonces( limit, skipIndex);
+    const count = await countAnnonces()
+    return res.send({annonces, totalPages: Math.ceil(count/limit)});
   } catch (err) {
     next(err);
   }
@@ -63,12 +69,15 @@ export const getAnnoncesByUserIdController: RequestHandler = async (
 ) => {
   try {
     const id = req.params.id;
-
+    const page = parseInt(req.query.page as string) || 1
+    const limit = 5
+    const skipIndex = (page - 1)*limit
     const user = await getUserById(id)
-      .populate({ path: "annonces", populate: { path: "user" } })
+      .populate({ path: "annonces", populate: { path: "user" }, options: {skip: skipIndex, limit} })
       .exec();
-
-    return res.send(user?.annonces);
+      const count = await countMesAnnonces(res.locals.user);
+    console.log(user)
+    return res.send({annonces: user?.annonces, totalPages: Math.ceil(count/limit)});
   } catch (err) {
     next(err);
   }
