@@ -1,17 +1,21 @@
 import { Typography, Pagination } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ListAnnoncesItem from "../../components/Annonces/ListeAnnoncesItem";
 import { getAllAnnonces } from "../../features/annonceSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 
 const ListeAnnonces = () => {
   const dispatch = useAppDispatch();
-  const { annonces } = useAppSelector((state) => state.annonces);
+  const { annonces, count } = useAppSelector((state) => state.annonces);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const handlePageChange = (event: any, value: number) => {
+    setCurrentPage(value);
+  };
   useEffect(() => {
-    dispatch(getAllAnnonces());
-  }, []);
+    dispatch(getAllAnnonces(currentPage));
+  }, [currentPage]);
   return (
     <>
       <Box
@@ -30,7 +34,7 @@ const ListeAnnonces = () => {
             Liste des annonces
           </Typography>
         </Container>
-        {annonces.length
+        {annonces && annonces.length
           ? annonces.map((annonce) => (
               <ListAnnoncesItem
                 key={annonce._id}
@@ -40,7 +44,7 @@ const ListeAnnonces = () => {
             ))
           : "Aucune annonce pour l'instant"}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
-          <Pagination count={3} shape="rounded" />
+          <Pagination count={count} page={currentPage} onChange={handlePageChange} shape="rounded" />
         </Stack>
       </Box>
     </>

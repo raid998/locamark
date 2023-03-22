@@ -1,16 +1,21 @@
 import { Typography, Pagination } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ListAnnoncesItem from "../../components/Annonces/ListeAnnoncesItem";
 import { getMesAnnonces } from "../../features/annonceSlice";
 import { store, useAppDispatch, useAppSelector } from "../../store";
 
 const MesAnnonces = () => {
   const dispatch = useAppDispatch();
-  const { annonces } = useAppSelector((state) => state.annonces || []);
+  const { annonces, count } = useAppSelector((state) => state.annonces || []);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (event: any, value: number) => {
+    setCurrentPage(value);
+  };
   useEffect(() => {
-    dispatch(getMesAnnonces(store.getState().user.user?.id || ""));
-  }, [dispatch]);
+    dispatch(getMesAnnonces({id: store.getState().user.user?.id || "", currentPage}));
+  }, [currentPage]);
   return (
     <>
       <Box
@@ -39,7 +44,7 @@ const MesAnnonces = () => {
             ))
           : "Vous n'avez pas d'annonces pour le moment"}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
-          <Pagination count={3} shape="rounded" />
+          <Pagination count={count} page={currentPage} onChange={handlePageChange} shape="rounded" />
         </Stack>
       </Box>
     </>
