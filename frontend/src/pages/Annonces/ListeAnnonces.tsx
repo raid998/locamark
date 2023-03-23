@@ -15,7 +15,7 @@ const ListeAnnonces = () => {
   };
   useEffect(() => {
     dispatch(getAllAnnonces(currentPage));
-  }, [currentPage]);
+  }, [currentPage, dispatch]);
   return (
     <>
       <Box
@@ -44,7 +44,12 @@ const ListeAnnonces = () => {
             ))
           : "Aucune annonce pour l'instant"}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
-          <Pagination count={count} page={currentPage} onChange={handlePageChange} shape="rounded" />
+          <Pagination
+            count={count}
+            page={currentPage}
+            onChange={handlePageChange}
+            shape="rounded"
+          />
         </Stack>
       </Box>
     </>

@@ -24,7 +24,7 @@ const ShowAnnonce = () => {
           "erreur lors de la récupération des informations de l'annonce"
         );
       });
-  }, []);
+  }, [id]);
 
   return (
     <Container sx={{ margin: "1rem auto" }}>

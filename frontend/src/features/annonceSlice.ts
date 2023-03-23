@@ -11,14 +11,13 @@ const initialState: AnnonceState = {
   error: "",
   loading: false,
   annonces: [],
-  count: 0
+  count: 0,
 };
 
 export const getAllAnnonces = createAsyncThunk(
   "annonce/getAllAnnonces",
   async (currentPage: number) => {
     const response = await getAllAnnoncesRequest(currentPage);
-    console.log(response.data)
     return response.data;
   }
 );
@@ -33,9 +32,8 @@ export const createAnnonce = createAsyncThunk(
 
 export const getMesAnnonces = createAsyncThunk(
   "annonce/getMesAnnonces",
-  async ({id, currentPage}: {id: string, currentPage: number}, ) => {
+  async ({ id, currentPage }: { id: string; currentPage: number }) => {
     const response = await getMesAnnoncesRequest(id, currentPage);
-    console.log(response.data)
 
     return response.data;
   }
@@ -58,8 +56,8 @@ export const annonceSlice = createSlice({
         (state, action: PayloadAction<any>) => {
           state.loading = false;
           state.error = "";
-          state.annonces = action.payload.annonces
-          state.count = action.payload.totalPages
+          state.annonces = action.payload.annonces;
+          state.count = action.payload.totalPages;
         }
       )
       .addCase(getAllAnnonces.rejected, (state, action) => {
@@ -91,7 +89,7 @@ export const annonceSlice = createSlice({
           state.loading = false;
           state.error = null;
           state.annonces = action.payload.annonces;
-          state.count = action.payload.totalPages
+          state.count = action.payload.totalPages;
         }
       )
       .addCase(getMesAnnonces.rejected, (state) => {

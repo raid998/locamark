@@ -18,7 +18,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import { deleteAnnonceRequest } from "../../requests/deleteRequests";
 
@@ -110,7 +109,10 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
           </Box>
         ) : null}
 
-        <Link style={{ textDecoration: "none" }} to={annonce._id}>
+        <Link
+          style={{ textDecoration: "none" }}
+          to={"/annonces/" + annonce._id}
+        >
           {" "}
           <CardMedia
             component="img"

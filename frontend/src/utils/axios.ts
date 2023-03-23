@@ -18,12 +18,15 @@ axiosPrivate.interceptors.request.use(
     // à rajouter dispatch(logout())
     throw new Error("déconnecté");
   },
-  (err) =>  Promise.reject(err)
+  (err) => Promise.reject(err)
 );
 
-axiosPrivate.interceptors.response.use(response => response, err => {
-  if(err.response && err.response.status == 401) {
-    store.dispatch(logout())
+axiosPrivate.interceptors.response.use(
+  (response) => response,
+  (err) => {
+    if (err.response && err.response.status === 401) {
+      store.dispatch(logout());
+    }
+    return Promise.reject(err);
   }
-  return Promise.reject(err);
-})
+);

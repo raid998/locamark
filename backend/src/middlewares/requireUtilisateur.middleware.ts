@@ -3,8 +3,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { verifyJwt } from "../utils/jwt";
 
 export const requireUtilisateur: RequestHandler = (req, res, next) => {
-  const user  = res.locals.user;
-  console.log(user)
+  const user = res.locals.user;
   if (!user)
     return res
       .status(401)

@@ -14,8 +14,10 @@ const MesAnnonces = () => {
     setCurrentPage(value);
   };
   useEffect(() => {
-    dispatch(getMesAnnonces({id: store.getState().user.user?.id || "", currentPage}));
-  }, [currentPage]);
+    dispatch(
+      getMesAnnonces({ id: store.getState().user.user?.id || "", currentPage })
+    );
+  }, [currentPage, dispatch]);
   return (
     <>
       <Box
@@ -44,7 +46,12 @@ const MesAnnonces = () => {
             ))
           : "Vous n'avez pas d'annonces pour le moment"}
         <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 5 }}>
-          <Pagination count={count} page={currentPage} onChange={handlePageChange} shape="rounded" />
+          <Pagination
+            count={count}
+            page={currentPage}
+            onChange={handlePageChange}
+            shape="rounded"
+          />
         </Stack>
       </Box>
     </>
