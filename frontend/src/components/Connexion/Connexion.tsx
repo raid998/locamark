@@ -94,6 +94,12 @@ const Authentification = () => {
             Vous n'avez pas de compte? Inscrivez-vous
           </Link>
         </Typography>
+
+        <Typography align="right">
+          <Link href="/" variant="body1">
+            Mot de passe oublié ?
+          </Link>
+        </Typography>
       </Container>
     </Box>
   );

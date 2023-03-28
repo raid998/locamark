@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { getMonProfilRequest } from "../requests/getRequests";
 import { loginRequest } from "../requests/postRequests";
 import { LoginSchema } from "../schemas/user.schema";
 import { UserState } from "../types";
@@ -26,7 +27,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      
       localStorage.removeItem("user");
       state.user = null;
       state.error = "";
@@ -50,9 +50,33 @@ export const userSlice = createSlice({
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(getMonProfil.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        getMonProfil.fulfilled,
+        (state, action: PayloadAction<UserState["user"]>) => {
+          state.loading = false;
+          state.error = null;
+          state.user = action.payload;
+        }
+      )
+      .addCase(getMonProfil.rejected, (state) => {
+        state.loading = false;
+        state.error =
+          "Erreur de la récupération des informations vous concernant";
       });
   },
 });
+
+export const getMonProfil = createAsyncThunk(
+  "mon-profil/getMonProfil",
+  async (id: string) => {
+    const response = await getMonProfilRequest(id);
+    return response.data;
+  }
+);
 
 export default userSlice.reducer;
 export const { logout } = userSlice.actions;

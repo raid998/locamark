@@ -8,9 +8,11 @@ import { store, useAppDispatch, useAppSelector } from "../../store";
 const MesAnnonces = () => {
   const dispatch = useAppDispatch();
   const { annonces } = useAppSelector((state) => state.annonces || []);
+
   useEffect(() => {
     dispatch(getMesAnnonces(store.getState().user.user?.id || ""));
   }, [dispatch]);
+
   return (
     <>
       <Box
@@ -26,7 +28,7 @@ const MesAnnonces = () => {
       >
         <Container maxWidth="sm">
           <Typography component="h1" variant="h5" align="center" m={4}>
-            Liste des annonces
+            Mes annonces
           </Typography>
         </Container>
         {annonces.length
