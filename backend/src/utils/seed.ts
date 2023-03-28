@@ -147,15 +147,145 @@ export const seedDB = async () => {
     prix: 600,
     user: user2._id,
   });
+  const annonce6 = new Annonce({
+    titre: "Annonce 6",
+    telephone: "0999999999",
+    adresse: "5 Boulevard Arc de triomphe",
+    codePostal: "75008",
+    ville: "Paris",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+    amet, consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.`,
+    prix: 600,
+    user: user2._id,
+  });
+  const annonce7 = new Annonce({
+    titre: "Annonce 7",
+    telephone: "0999999999",
+    adresse: "5 Boulevard Arc de triomphe",
+    codePostal: "75008",
+    ville: "Paris",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+    amet, consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.`,
+    prix: 600,
+    user: user2._id,
+  });
+  const annonce8 = new Annonce({
+    titre: "Annonce 8",
+    telephone: "0999999999",
+    adresse: "5 Boulevard Arc de triomphe",
+    codePostal: "75008",
+    ville: "Paris",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+    amet, consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.`,
+    prix: 600,
+    user: user2._id,
+  });
+  const annonce9 = new Annonce({
+    titre: "Annonce 9",
+    telephone: "0999999999",
+    adresse: "5 Boulevard Arc de triomphe",
+    codePostal: "75008",
+    ville: "Paris",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+    amet, consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.`,
+    prix: 600,
+    user: user2._id,
+  });
+  const annonce10 = new Annonce({
+    titre: "Annonce 10",
+    telephone: "0999999999",
+    adresse: "5 Boulevard Arc de triomphe",
+    codePostal: "75008",
+    ville: "Paris",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+    amet, consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.`,
+    prix: 600,
+    user: user2._id,
+  });
 
   user1.annonces?.push(annonce1.id);
   user1.annonces?.push(annonce2.id);
   user1.annonces?.push(annonce3.id);
   user2.annonces?.push(annonce4.id);
   user2.annonces?.push(annonce5.id);
+  user2.annonces?.push(annonce6.id);
+  user2.annonces?.push(annonce7.id);
+  user2.annonces?.push(annonce8.id);
+  user2.annonces?.push(annonce9.id);
+  user2.annonces?.push(annonce10.id);
 
   await User.insertMany([user1, user2]);
   console.log("Users created successfully");
-  await Annonce.insertMany([annonce1, annonce2, annonce3, annonce4, annonce5]);
+  await Annonce.insertMany([annonce1, annonce2, annonce3, annonce4, annonce5, annonce6, annonce7, annonce8, annonce9, annonce10]);
   console.log("Announces created successfully");
 };

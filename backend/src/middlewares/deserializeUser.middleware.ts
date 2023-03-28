@@ -10,7 +10,7 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
   const token = headers.authorization.split(" ")[1];
   try {
     const decodedUser = <Partial<IUser>>verifyJwt(token);
-    const user = await User.findOne({ email: decodedUser.email });
+    const user = await User.findOne({ _id: decodedUser.id });
 
     if (!user) {
       return next();

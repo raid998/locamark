@@ -85,7 +85,7 @@ const EditAnnonce = () => {
         toast.error("Vous n'avez pas le droit de modifier cette annonce");
         navigate("/annonces");
       });
-  }, []);
+  }, [id, navigate]);
   const description = watch("description");
 
   const setDescription = (description: string) => {

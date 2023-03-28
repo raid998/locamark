@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logout } from "../features/userSlice";
 import { store } from "../store";
 export const axiosPrivate = axios.create({
   baseURL: process.env.REACT_APP_API_URL || "http://localhost:8080/api",
@@ -18,4 +19,14 @@ axiosPrivate.interceptors.request.use(
     throw new Error("déconnecté");
   },
   (err) => Promise.reject(err)
+);
+
+axiosPrivate.interceptors.response.use(
+  (response) => response,
+  (err) => {
+    if (err.response && err.response.status === 401) {
+      store.dispatch(logout());
+    }
+    return Promise.reject(err);
+  }
 );

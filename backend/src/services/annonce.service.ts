@@ -1,4 +1,4 @@
-import { Document, Types } from "mongoose";
+import { Document, Types ,ObjectId} from "mongoose";
 import { User } from "../model/user.model";
 import { Annonce, IAnnonce } from "../model/annonce.model";
 import { CreateAnnonceInput } from "../schemas/annonce.schema";
@@ -12,8 +12,8 @@ export const createAnnonce = async (data: CreateAnnonceInput, user: any) => {
   return annonce.save();
 };
 
-export const getAllAnnonces = () => {
-  return Annonce.find().populate({ path: "user" }).exec();
+export const getAllAnnonces = ( limit: number, skipIndex: number) => {
+  return Annonce.find().populate({ path: "user" }).limit(limit).skip(skipIndex).exec();
 };
 
 export const pushAnnonce = async (
@@ -47,3 +47,10 @@ export const deleteAnnonce = async (id: string) => {
   const annonce = await Annonce.findById(id);
   await annonce?.deleteOne();
 };
+
+export const countAnnonces =  () => {
+  return Annonce.countDocuments()
+}
+export const countMesAnnonces = (user: { _id: any; }) => {
+  return Annonce.find({user: user._id}).countDocuments()
+}
