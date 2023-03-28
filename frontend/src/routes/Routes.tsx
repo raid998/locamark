@@ -4,6 +4,7 @@ import EditAnnonce from "../components/Annonce/Edit";
 import ShowAnnonce from "../components/Annonce/Show";
 import Connexion from "../components/Connexion/Connexion";
 import Inscription from "../components/Inscription/Inscription";
+import EditProfil from "../components/Profil/EditProfil";
 import ListeAnnonces from "../pages/Annonces/ListeAnnonces";
 import MesAnnonces from "../pages/MesAnnonces/MesAnnonces";
 import ProtectedRoute from "../pages/ProtectedRoute";
@@ -21,6 +22,14 @@ const Router = ({ user }: { user: UserState["user"] }) => (
     />
     <Route path="/connexion" element={<Connexion />} />
     <Route path="/inscription" element={<Inscription />} />
+    <Route
+      path="/mon-profil"
+      element={
+        <ProtectedRoute user={user}>
+          <EditProfil />
+        </ProtectedRoute>
+      }
+    />
     <Route
       path="/annonces"
       element={
