@@ -9,5 +9,5 @@ export const editAnnonceRequest = async (
 };
 
 export const editProfilRequest = async (id: string, data: Partial<IUser>) => {
-  return axiosPrivate.put("/mon-profil/" + id, data);
+  return axiosPrivate.put("/users/" + id, data);
 };

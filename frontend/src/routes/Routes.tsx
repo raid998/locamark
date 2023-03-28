@@ -23,7 +23,7 @@ const Router = ({ user }: { user: UserState["user"] }) => (
     <Route path="/connexion" element={<Connexion />} />
     <Route path="/inscription" element={<Inscription />} />
     <Route
-      path="/mon-profil/:id/modifier"
+      path="/mon-profil"
       element={
         <ProtectedRoute user={user}>
           <EditProfil />

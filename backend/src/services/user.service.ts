@@ -7,8 +7,11 @@ export const getUserById = (id: string) => {
 export const updateUser = async (data: IUser, id: string) => {
   try {
     await User.findByIdAndUpdate(id, data);
+    console.log("user updated");
     return true;
-  } catch {
+  } catch (err) {
+    console.log(err);
+
     return false;
   }
 };

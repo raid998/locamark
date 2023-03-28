@@ -1,71 +1,61 @@
-import { Box, Button, Container, FormControl, TextField } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IUser } from "../../types";
-import { useAppSelector } from "../../store";
-import { registerSchema, RegisterSchema } from "../../schemas/user.schema";
-import { editProfilRequest } from "../../requests/putRequests";
-import { getProfilContentRequest } from "../../requests/getRequests";
+import { useAppDispatch, useAppSelector } from "../../store";
+import {
+  updateProfilSchema,
+  UpdateProfilSchema,
+} from "../../schemas/user.schema";
+import { updateProfil } from "../../features/userSlice";
 
 const EditProfil = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<Partial<IUser>>({});
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
   const { loading } = useAppSelector((state) => state.user);
-  const { id } = useParams();
+  const id = user?.id;
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<Partial<UpdateProfilSchema>>({
+    resolver: zodResolver(updateProfilSchema),
     defaultValues: {
-      nom: user.nom,
-      prenom: user.prenom,
-      email: user.email,
+      nom: user?.nom,
+      prenom: user?.prenom,
+      email: user?.email,
     },
   });
-
-  useEffect(() => {
-    getProfilContentRequest(id as string)
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch(() => {
-        toast.error(
-          "Erreur lors de la récupération des informations du profil de l'utilisateur"
-        );
-      });
-  }, []);
 
   return (
     <>
       <Container
         sx={{ margin: "1rem auto" }}
         component="form"
-        onSubmit={handleSubmit((data) => {
-          editProfilRequest(id as string, {
-            nom: data.nom,
-            prenom: data.prenom,
-            email: data.email,
-          })
-            .then(() => {
-              toast.success("Profil modifié avec succès");
-              navigate("/mon-profil/" + id, { replace: true });
-            })
-            .catch(() => {
-              toast.error("Erreur lors de la modification du profil");
-            });
+        onSubmit={handleSubmit(async (data) => {
+          try {
+            console.log(data);
+            await dispatch(
+              updateProfil({ data, id } as {
+                data: Partial<UpdateProfilSchema>;
+                id: string;
+              })
+            );
+            toast.success("Profil modifié avec succès");
+            navigate(0);
+          } catch {
+            toast.error("Erreur lors de la modification du profil");
+          }
         })}
       >
         <Box className="user-item">
           <TextField
-            defaultValue={user.nom}
+            defaultValue={user?.nom}
             error={!!errors.nom}
             helperText={errors.nom?.message}
             variant="standard"
@@ -75,7 +65,7 @@ const EditProfil = () => {
         </Box>
         <Box className="user-item">
           <TextField
-            defaultValue={user.prenom}
+            defaultValue={user?.prenom}
             error={!!errors.prenom}
             helperText={errors.prenom?.message}
             variant="standard"
@@ -85,7 +75,7 @@ const EditProfil = () => {
         </Box>
         <Box className="user-item">
           <TextField
-            defaultValue={user.email}
+            defaultValue={user?.email}
             error={!!errors.email}
             helperText={errors.email?.message}
             variant="standard"
