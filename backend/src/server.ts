@@ -6,10 +6,12 @@ import { db } from "./db/db";
 import cors from "cors";
 import { deserializeUser } from "./middlewares/deserializeUser.middleware";
 import { seedDB } from "./utils/seed";
+import path from "path";
 
 const app: Express = express();
 dotenv.config();
 
+app.use(express.static(path.join(__dirname, '../uploads')));
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
@@ -22,4 +24,3 @@ app.use("/api", routes);
 app.listen(process.env.PORT, () => {
   console.log(`server listening on port ${process.env.PORT}`);
 });
- 

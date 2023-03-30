@@ -60,7 +60,7 @@ const ShowAnnonce = () => {
               alignItems: "center",
             }}
           >
-            <Grid
+            {annonce.photos?.map(photo => <Grid
               item
               sx={{
                 width: "240px",
@@ -80,55 +80,10 @@ const ShowAnnonce = () => {
                 }}
                 variant="elevation"
               >
-                1
+                <a href={'http://localhost:8080/'+photo.slice(8)}>1</a>
               </Paper>
-            </Grid>
-            <Grid
-              item
-              sx={{
-                width: "240px",
-                height: "240px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Paper
-                sx={{
-                  width: "240px",
-                  height: "240px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                variant="elevation"
-              >
-                2
-              </Paper>
-            </Grid>
-            <Grid
-              item
-              sx={{
-                width: "240px",
-                height: "240px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Paper
-                variant="elevation"
-                sx={{
-                  width: 240,
-                  height: 240,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                3
-              </Paper>
-            </Grid>
+            </Grid>)}
+            
           </Box>
         </Grid>
       </Box>
