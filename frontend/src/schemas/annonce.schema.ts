@@ -37,7 +37,9 @@ export const createAnnonceSchema = z.object({
   telephone: z
     .string()
     .regex(/^0(6|7|9)\d{8}$/, { message: "Le numéro est erroné" }),
-  photos: z.string().array().optional(),
+  photos: z.array(z.any().refine((file) => file instanceof File, {
+    message: 'Must be a file',
+  })),
   prix: z.string().min(1).regex(/^\d+$/),
 });
 

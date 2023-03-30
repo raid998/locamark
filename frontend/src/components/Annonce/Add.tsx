@@ -1,7 +1,7 @@
 import { Container } from "@mui/system";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, FormControl, Grid, Typography } from "@mui/material";
 import "./annonces.css";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,15 +20,25 @@ import { createAnnonce } from "../../features/annonceSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
+import { axiosPrivate } from "../../utils/axios";
 
 const AddAnnonce = () => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.annonces);
   const navigate = useNavigate();
+  const [selectedPhotos, setSelectedPhotos] = useState<any>([]);
 
+
+  const handlePhotoUpload = (e: any) => {
+    const target = e.target as HTMLInputElement
+    if (target.files?.length) {
+      setSelectedPhotos([...selectedPhotos, target.files[0]])
+      setValue("photos", selectedPhotos)
+    }
+  }
   const {
     register,
-    formState: { errors },
+    formState: { errors,},
     handleSubmit,
     watch,
     setValue,
@@ -38,13 +48,15 @@ const AddAnnonce = () => {
 
   useEffect(() => {
     register("description");
+    register("photos")
   }, [register]);
 
   const description = watch("description");
-
+  const photos = watch("photos");
   const setDescription = (description: string) => {
     setValue("description", description);
   };
+
 
   return (
     <Container
@@ -52,11 +64,36 @@ const AddAnnonce = () => {
       component="form"
       onSubmit={handleSubmit(
         async (data) => {
-          await dispatch(createAnnonce(data));
+          console.log("success")
+          const formData = new FormData();
+          formData.append("titre", data.titre);
+          formData.append("description", data.description);
+          formData.append("adresse", data.adresse);
+          formData.append("complement_adresse", data.complement_adresse ?? "");
+          formData.append("code_postal", data.code_postal);
+          formData.append("ville", data.ville);
+          formData.append("telephone", data.telephone);
+          formData.append("prix", data.prix);
+          if(data.photos)
+          selectedPhotos.forEach((file : any) => {
+            formData.append('photos', file);
+          });
+            console.log(formData)
+          try {
+            const response =  await axiosPrivate.post("/annonces", formData, {
+              headers : {
+                "Content-Type" : "multipart/form-data"
+              }
+            })
+            console.log(response.data);
+          } catch (error) {
+            console.error(error);
+          }
           toast.success("Annonce créée avec succès");
           navigate("/annonces", { replace: true });
         },
-        () => {
+        (err) => {
+          console.log(err.photos);
           toast.error("Erreur lors de la création de l'annonce");
         }
       )}
@@ -187,7 +224,7 @@ const AddAnnonce = () => {
             component={"label"}
           >
             Télécharger une photo
-            <input type="file" hidden />
+            <input type="file" hidden id="photos" onChange={handlePhotoUpload} />
           </Button>
         </Grid>
       </Box>

@@ -21,24 +21,28 @@ export const createAnnonceController: RequestHandler = async (
 ) => {
   try {
     // Extraire les données reçues de l'annonce
-    const annonceData = createAnnonceSchema.safeParse(req.body);
+    const photos = []
+    for (let i = 0; i < (req.files?.length as number ) ; i++) {
+      photos.push((req.files as Express.Multer.File[])[i].path)
+    }
+    const annonceData = createAnnonceSchema.strip().safeParse({...req.body, photos});
     if (!annonceData.success)
       return res.status(400).send({
         message:
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
-
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
+    
     const annonce = await createAnnonce(
-      annonceData.data,
-      await User.findOne({ email: user._doc.email })
+      {...annonceData.data, photos},
+      await User.findOne({ email: user.email })
     );
-    await pushAnnonce(annonce, user._doc.email);
+    await pushAnnonce(annonce, user.email);
 
     return res.send({
       message: "Annonce créée avec succès",
-      user: await signUser(user._doc.email), // ça pourrait changer
+      user: await signUser(user.email), // ça pourrait changer
     });
   } catch (error) {
     next(error);
