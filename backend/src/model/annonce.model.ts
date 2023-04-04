@@ -8,7 +8,7 @@ export interface IAnnonce {
   codePostal: string;
   ville: string;
   description: string;
-  photos?: string[];
+  photos: string[];
   prix: number;
   createdAt?: Date;
   user: { type: Schema.Types.ObjectId; ref: "User" };
@@ -22,7 +22,7 @@ const annonceSchema = new Schema<IAnnonce>({
   codePostal: { type: String, required: true },
   ville: { type: String, required: true },
   description: { type: String, required: true },
-  photos: { type: [String], required: false },
+  photos: [{ type: String, required: true }],
   prix: { type: Number, required: true },
   createdAt: { type: Date, required: false },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },

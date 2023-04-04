@@ -33,7 +33,7 @@ const MesAnnonces = () => {
       >
         <Container maxWidth="sm">
           <Typography component="h1" variant="h5" align="center" m={4}>
-            Liste des annonces
+            Mes annonces
           </Typography>
         </Container>
         {annonces.length

@@ -27,6 +27,7 @@ export const pushAnnonce = async (
   email: any
 ) => {
   const user = await User.findOne({ email });
+  user?.annonces?.push(annonce.id)
   return user?.save();
 };
 
