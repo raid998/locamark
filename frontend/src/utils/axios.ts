@@ -2,10 +2,10 @@ import axios from "axios";
 import { logout } from "../features/userSlice";
 import { store } from "../store";
 export const axiosPrivate = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8080/api",
+  baseURL: process.env.REMOTE || "http://localhost:8080/api",
 });
 export const axiosPublic = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8080/api",
+  baseURL: process.env.REMOTE || "http://localhost:8080/api",
 });
 
 axiosPrivate.interceptors.request.use(

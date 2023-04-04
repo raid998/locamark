@@ -89,8 +89,8 @@ const EditAnnonce = () => {
             setAnnonce(response.data);
             const photos = response.data.photos as any[]
             console.log(photos.length)
-            setImagePreviews(photos?.map((photo, index) => ({image: 'http://localhost:8080'+photo.slice(7), id: index})) || [])
-            const blobs = photos.map(photo => fetch("http://localhost:8080"+photo.slice(7)).then(response => response.blob()))
+            setImagePreviews(photos?.map((photo, index) => ({image: (process.env.REACT_APP_REMOTE ||'http://localhost:8080')+photo.slice(7), id: index})) || [])
+            const blobs = photos.map(photo => fetch((process.env.REACT_APP_REMOTE ||'http://localhost:8080')+photo.slice(7)).then(response => response.blob()))
             const imageFiles = (await Promise.all(blobs)).map((blob, i )=> new File([blob], i+".jpg" ))
             setSelectedPhotos(imageFiles)
             setValue("photos", selectedPhotos)

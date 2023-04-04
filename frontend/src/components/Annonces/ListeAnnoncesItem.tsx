@@ -117,7 +117,7 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
           <CardMedia
             component="img"
             sx={{ width: 251, height: 251, objectFit:"cover" }}
-            image={annonce.photos?.length ? "http://localhost:8080"+annonce.photos[0].slice(7) : ""}
+            image={annonce.photos?.length ? (process.env.REACT_APP_REMOTE ||'http://localhost:8080')+annonce.photos[0].slice(7) : ""}
             alt="Live from space album cover"
           />
         </Link>

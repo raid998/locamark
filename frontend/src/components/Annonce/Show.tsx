@@ -99,7 +99,7 @@ const ShowAnnonce = () => {
                   variant="elevation"
                 >
                   <img
-                    src={"http://localhost:8080" + photo.slice(7)}
+                    src={(process.env.REACT_APP_REMOTE ||'http://localhost:8080') + photo.slice(7)}
                     style={{
                       minWidth: "100%",
                       height: "100%",
@@ -119,7 +119,7 @@ const ShowAnnonce = () => {
                   >
                     <Box sx={style}>
                       <img
-                        src={"http://localhost:8080" + photo.slice(7)}
+                        src={(process.env.REACT_APP_REMOTE ||'http://localhost:8080') + photo.slice(7)}
                         style={{
                           objectFit: "cover",
 
