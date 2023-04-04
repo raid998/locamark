@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
 import { IAnnonce } from "../../types";
 import { theme } from "../../utils/theme";
-import "./listeAnnonces.css";
+import "./listeAnnonces.scss";
 import { Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -116,8 +116,8 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
           {" "}
           <CardMedia
             component="img"
-            sx={{ width: 251 }}
-            image={annonce.photos ? annonce.photos[0] : ""}
+            sx={{ width: 251, height: 251, objectFit:"cover" }}
+            image={annonce.photos?.length ? "http://localhost:8080"+annonce.photos[0].slice(7) : ""}
             alt="Live from space album cover"
           />
         </Link>
@@ -150,9 +150,8 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
               whiteSpace="initial"
               textOverflow="ellipsis"
               sx={{ overflowWrap: "break-word" }}
-            >
-              {annonce.description}
-            </Typography>
+                dangerouslySetInnerHTML={{__html: annonce.description.replace(/(<([^>]+)>)/gi, "").replace(/\n/gi, "").replace(/\s+/, "")}}
+            />
             <Box
               sx={{
                 display: "flex",

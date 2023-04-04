@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { NavBarItemType, settingsType } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../../features/userSlice";
@@ -23,6 +23,7 @@ const pages: NavBarItemType = [
 ];
 
 const NavBar = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
 
@@ -48,7 +49,9 @@ const NavBar = () => {
   };
 
   const loggedInSettings: settingsType = [
-    { titre: "Profil", action: () => {} },
+    { titre: "Profil", action: () => {
+      navigate("/mon-profil", {replace: true})
+    } },
     {
       titre: "Déconnexion",
       action: () => {

@@ -23,8 +23,22 @@ const EditProfil = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<Partial<UpdateProfilSchema>>({
-    resolver: zodResolver(updateProfilSchema),
+    setError,
+  } = useForm<UpdateProfilSchema>({
+    resolver: zodResolver(
+      updateProfilSchema.superRefine(({ oldPassword, password }, ctx) => {
+        if (
+          (password.length && !oldPassword?.length) ||
+          (!password.length && oldPassword?.length)
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message:
+              "Il faut remplir les deux champs si vous voulez changer votre mot de passe",
+          });
+        }
+      })
+    ),
     defaultValues: {
       nom: user?.nom,
       prenom: user?.prenom,
@@ -37,21 +51,26 @@ const EditProfil = () => {
       <Container
         sx={{ margin: "1rem auto" }}
         component="form"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            console.log(data);
-            await dispatch(
-              updateProfil({ data, id } as {
-                data: Partial<UpdateProfilSchema>;
-                id: string;
-              })
-            );
-            toast.success("Profil modifié avec succès");
-            navigate(0);
-          } catch {
-            toast.error("Erreur lors de la modification du profil");
+        onSubmit={handleSubmit(
+          async (data) => {
+            try {
+              await dispatch(
+                updateProfil({ data, id } as {
+                  data: UpdateProfilSchema;
+                  id: string;
+                })
+              );
+              toast.success("Profil modifié avec succès");
+              navigate(0);
+            } catch {
+              toast.error("Erreur lors de la modification du profil");
+            }
+          },
+          (err) => {
+            console.log(err);
+            setError("password", (err as any)[""]);
           }
-        })}
+        )}
       >
         <Box className="user-item">
           <TextField
@@ -85,18 +104,22 @@ const EditProfil = () => {
         </Box>
         <Box className="user-item">
           <TextField
-            error={!!errors.password}
-            helperText={errors.password?.message}
+            error={!!errors.oldPassword}
+            helperText={errors.oldPassword?.message}
+            type="password"
             variant="standard"
             label="Ancien mot de passe"
+            {...register("oldPassword")}
           />
         </Box>
         <Box className="user-item">
           <TextField
             error={!!errors.password}
             helperText={errors.password?.message}
+            type="password"
             variant="standard"
             label="Nouveau mot de passe"
+            {...register("password")}
           />
         </Box>
 
