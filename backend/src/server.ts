@@ -11,8 +11,8 @@ import path from "path";
 const app: Express = express();
 dotenv.config();
 
-app.use(express.static(path.join(__dirname, '../uploads')));
 app.use(cors());
+app.use(express.static(path.join(__dirname, '../uploads')));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(logger);

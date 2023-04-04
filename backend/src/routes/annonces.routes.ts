@@ -46,7 +46,7 @@ const upload = multer({ storage });
 routes.post("/", requireUtilisateur, upload.array('photos'), createAnnonceController);
 routes.get("/", requireUtilisateur, getAllAnnoncesController);
 routes.get("/:id", requireUtilisateur, getAnnonceByIdController);
-routes.put("/:id", requireUtilisateur, checkUtilisateur, editAnnonceController);
+routes.put("/:id", requireUtilisateur, checkUtilisateur,upload.array('photos'), editAnnonceController);
 routes.post("/:id", requireUtilisateur, checkUtilisateur, (req, res) => {
   return res.sendStatus(200);
 });

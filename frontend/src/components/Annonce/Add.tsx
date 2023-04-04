@@ -10,45 +10,70 @@ import Box from "@mui/material/Box";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField } from "@mui/material";
+import { TextField,   IconButton,
+} from "@mui/material";
 import {
   CreateAnnonceInput,
   createAnnonceSchema,
 } from "../../schemas/annonce.schema";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { createAnnonce } from "../../features/annonceSlice";
+import { useAppSelector } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import { axiosPrivate } from "../../utils/axios";
+import { isValidFile } from "../../utils/filechecker";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const AddAnnonce = () => {
-  const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.annonces);
   const navigate = useNavigate();
-  const [selectedPhotos, setSelectedPhotos] = useState<any>([]);
-
+  const [selectedPhotos, setSelectedPhotos] = useState<any[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<any[]>([]);
 
   const handlePhotoUpload = (e: any) => {
-    const target = e.target as HTMLInputElement
+    const target = e.target as HTMLInputElement;
     if (target.files?.length) {
-      setSelectedPhotos([...selectedPhotos, target.files[0]])
-      setValue("photos", selectedPhotos)
+      const file = e.target.files?.[0];
+      isValidFile(file)
+        .then((isValid) => {
+          if (isValid) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              setImagePreviews([...imagePreviews, {id: imagePreviews.length, image: reader.result}]);
+            };
+            reader.readAsDataURL(file);
+            setSelectedPhotos([...selectedPhotos, file]);
+            setValue("photos", selectedPhotos);
+          } else {
+            // file is invalid, show error message
+            setError("photos", {
+              message: "Le fichier téléchargé n'est pas une image",
+            });
+          }
+        })
+        .catch(() => {
+          setError("photos", {
+            message:
+              "Un problème est survenu lors du téléchargement de l'image",
+          });
+        });
     }
-  }
+  };
   const {
     register,
-    formState: { errors,},
+    formState: { errors },
     handleSubmit,
     watch,
     setValue,
+    setError,
   } = useForm<CreateAnnonceInput>({
     resolver: zodResolver(createAnnonceSchema),
   });
 
   useEffect(() => {
     register("description");
-    register("photos")
+    register("photos");
   }, [register]);
 
   const description = watch("description");
@@ -56,7 +81,11 @@ const AddAnnonce = () => {
   const setDescription = (description: string) => {
     setValue("description", description);
   };
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  const handleCancelClick = (id: any) => {
+    setSelectedImage(null);
+    setImagePreviews(imagePreviews.filter(preview => preview.id !== id))
+  };
 
   return (
     <Container
@@ -64,7 +93,7 @@ const AddAnnonce = () => {
       component="form"
       onSubmit={handleSubmit(
         async (data) => {
-          console.log("success")
+          console.log("success");
           const formData = new FormData();
           formData.append("titre", data.titre);
           formData.append("description", data.description);
@@ -74,17 +103,16 @@ const AddAnnonce = () => {
           formData.append("ville", data.ville);
           formData.append("telephone", data.telephone);
           formData.append("prix", data.prix);
-          if(data.photos)
-          selectedPhotos.forEach((file : any) => {
-            formData.append('photos', file);
-          });
-            console.log(formData)
+          if (data.photos)
+            selectedPhotos.forEach((file: any) => {
+              formData.append("photos", file);
+            });
           try {
-            const response =  await axiosPrivate.post("/annonces", formData, {
-              headers : {
-                "Content-Type" : "multipart/form-data"
-              }
-            })
+            const response = await axiosPrivate.post("/annonces", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
             console.log(response.data);
           } catch (error) {
             console.error(error);
@@ -92,8 +120,7 @@ const AddAnnonce = () => {
           toast.success("Annonce créée avec succès");
           navigate("/annonces", { replace: true });
         },
-        (err) => {
-          console.log(err.photos);
+        () => {
           toast.error("Erreur lors de la création de l'annonce");
         }
       )}
@@ -135,87 +162,102 @@ const AddAnnonce = () => {
           container
           className="annonce-item-element"
           direction={"column"}
-          sx={{ backgroundColor: "lightgrey" }}
+          sx={{ backgroundColor: "lightgrey", maxWidth: '100%', overflowX: "auto", }}
           height="300"
+          
         >
           <Box
+          
             padding={1}
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              alignItems: "center",
+             
+              overflowX: "auto",
+              maxWidth: '95%'
             }}
+            display={"flex"}
+            flexWrap={"wrap"}
+            flexDirection={"row"}
+          justifyContent={"center"}
+          alignItems={"center"}
           >
-            <Grid
+            
+            {imagePreviews.length ? 
+             imagePreviews.map(file  => ( 
+             <Grid
+             key={file.id}
               item
               sx={{
+                margin: "4px",
                 width: "240px",
                 height: "240px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                display: "inline-block",
               }}
-            >
-              <Paper
-                sx={{
-                  width: "240px",
-                  height: "240px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                variant="elevation"
-              >
-                1
-              </Paper>
-            </Grid>
-            <Grid
-              item
+            > <Paper
+             
+              variant="elevation"
               sx={{
-                width: "240px",
-                height: "240px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                width: 240,
+                height: 240,
+                overflow: "hidden",
+                position: 'relative', 
+                '& .cancel-icon': {
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  zIndex: 1
+                }
+                
               }}
             >
-              <Paper
-                sx={{
-                  width: "240px",
-                  height: "240px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                variant="elevation"
-              >
-                2
-              </Paper>
-            </Grid>
-            <Grid
-              item
-              sx={{
-                width: "240px",
-                height: "240px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Paper
+             {selectedImage === file.id && (
+                <IconButton
+                  className="cancel-icon"
+                  onClick={() => {
+                    handleCancelClick(file.id)
+                  }}
+                >
+                  <CancelIcon />
+                </IconButton>
+              )}
+  <img
+    src={file.image}
+    style={{
+      minWidth: "100%",
+      height: "100%",
+      objectFit: "cover",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      
+    }}
+    onClick={() => setSelectedImage(file.id)}
+
+  />
+  </Paper>
+  </Grid>
+))
+             : (
+              <Grid>
+    <Paper
                 variant="elevation"
                 sx={{
                   width: 240,
                   height: 240,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  overflow: "hidden",
+                  position: "relative",
                 }}
               >
-                3
-              </Paper>
-            </Grid>
+    <AddPhotoAlternateIcon
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      }}
+    /></Paper></Grid>
+  )}
+              
+            
           </Box>
           <Button
             sx={{ margin: "0 auto" }}
@@ -224,9 +266,18 @@ const AddAnnonce = () => {
             component={"label"}
           >
             Télécharger une photo
-            <input type="file" hidden id="photos" onChange={handlePhotoUpload} />
+            <input
+              type="file"
+              accept="image/jpg, image/jpeg, image/png"
+              hidden
+              id="photos"
+              onChange={handlePhotoUpload}
+            />
           </Button>
         </Grid>
+        <p style={{ textAlign: "center", color: "red" }}>
+          {errors.photos?.message}
+        </p>
       </Box>
       <Box className="annonce-item">
         <Typography className="annonce-item-element" variant="h5">

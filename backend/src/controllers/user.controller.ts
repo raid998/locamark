@@ -6,7 +6,6 @@ export const editProfilController: RequestHandler = async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    console.log(data);
     const updateStatus = await updateUser(data, id);
     const signedUser = await signUser(data.email);
     if (updateStatus && signedUser)
@@ -17,6 +16,7 @@ export const editProfilController: RequestHandler = async (req, res) => {
         prenom: signedUser.prenom,
         token: signedUser.token,
       });
+      return res.sendStatus(400)
   } catch {
     return res.sendStatus(400);
   }

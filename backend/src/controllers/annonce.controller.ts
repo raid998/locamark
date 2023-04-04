@@ -21,11 +21,13 @@ export const createAnnonceController: RequestHandler = async (
 ) => {
   try {
     // Extraire les données reçues de l'annonce
-    const photos = []
-    for (let i = 0; i < (req.files?.length as number ) ; i++) {
-      photos.push((req.files as Express.Multer.File[])[i].path)
+    const photos = [];
+    for (let i = 0; i < (req.files?.length as number); i++) {
+      photos.push((req.files as Express.Multer.File[])[i].path);
     }
-    const annonceData = createAnnonceSchema.strip().safeParse({...req.body, photos});
+    const annonceData = createAnnonceSchema
+      .strip()
+      .safeParse({ ...req.body, photos });
     if (!annonceData.success)
       return res.status(400).send({
         message:
@@ -33,9 +35,9 @@ export const createAnnonceController: RequestHandler = async (
       });
     // Créer une nouvelle entité annonce
     const { user } = res.locals;
-    
+
     const annonce = await createAnnonce(
-      {...annonceData.data, photos},
+      { ...annonceData.data, photos },
       await User.findOne({ email: user.email })
     );
     await pushAnnonce(annonce, user.email);
@@ -55,12 +57,12 @@ export const getAllAnnoncesController: RequestHandler = async (
   next
 ) => {
   try {
-    const page = parseInt(req.query.page as string) || 1
-    const limit = 5
-    const skipIndex = (page - 1)*limit
-    const annonces = await getAllAnnonces( limit, skipIndex);
-    const count = await countAnnonces()
-    return res.send({annonces, totalPages: Math.ceil(count/limit)});
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 5;
+    const skipIndex = (page - 1) * limit;
+    const annonces = await getAllAnnonces(limit, skipIndex);
+    const count = await countAnnonces();
+    return res.send({ annonces, totalPages: Math.ceil(count / limit) });
   } catch (err) {
     next(err);
   }
@@ -73,15 +75,21 @@ export const getAnnoncesByUserIdController: RequestHandler = async (
 ) => {
   try {
     const id = req.params.id;
-    const page = parseInt(req.query.page as string) || 1
-    const limit = 5
-    const skipIndex = (page - 1)*limit
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 5;
+    const skipIndex = (page - 1) * limit;
     const user = await getUserById(id)
-      .populate({ path: "annonces", populate: { path: "user" }, options: {skip: skipIndex, limit} })
+      .populate({
+        path: "annonces",
+        populate: { path: "user" },
+        options: { skip: skipIndex, limit },
+      })
       .exec();
-      const count = await countMesAnnonces(res.locals.user);
-    console.log(user)
-    return res.send({annonces: user?.annonces, totalPages: Math.ceil(count/limit)});
+    const count = await countMesAnnonces(res.locals.user);
+    return res.send({
+      annonces: user?.annonces,
+      totalPages: Math.ceil(count / limit),
+    });
   } catch (err) {
     next(err);
   }
@@ -106,10 +114,13 @@ export const editAnnonceController: RequestHandler = async (
   res,
   next: NextFunction
 ) => {
+  const photos = []
+  for (let i = 0; i < (req.files?.length as number); i++) {
+    photos.push((req.files as Express.Multer.File[])[i].path);
+  }
   const id = req.params.id;
   const data = req.body;
-
-  const updateStatus = await updateAnnonce(data, id);
+  const updateStatus = await updateAnnonce({...data, photos}, id);
   if (updateStatus) return res.sendStatus(200);
   return res.sendStatus(400);
 };
