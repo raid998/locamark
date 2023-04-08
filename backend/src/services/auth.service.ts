@@ -10,7 +10,7 @@ export const comparePasswords = async (
   try {
     const user = await User.findOne({ email });
     if (!user) return false;
-    return await bcrypt.compare(password, user.password);
+    return bcrypt.compare(password, user.password);
   } catch {
     return false;
   }
@@ -43,6 +43,7 @@ export const createUtilisateur = async (
   data: RegisterSchema
 ): Promise<boolean> => {
   const { email, password, nom, prenom } = data;
+  console.log(password);
   const user = await User.findOne({ email });
   if (user) return false;
   const hashedPassword = await bcrypt.hash(password, 10);
