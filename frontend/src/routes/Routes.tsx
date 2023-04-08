@@ -9,9 +9,11 @@ import ListeAnnonces from "../pages/Annonces/ListeAnnonces";
 import MesAnnonces from "../pages/MesAnnonces/MesAnnonces";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import { UserState } from "../types";
+import Accueil from "../components/Accueil/Accueil";
 
 const Router = ({ user }: { user: UserState["user"] }) => (
   <Routes>
+    <Route path="/" element={<Accueil />} />
     <Route
       path="/"
       element={
