@@ -67,7 +67,6 @@ const EditProfil = () => {
             }
           },
           (err) => {
-            console.log(err);
             setError("password", (err as any)[""]);
           }
         )}
