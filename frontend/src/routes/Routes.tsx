@@ -72,6 +72,7 @@ const Router = ({ user }: { user: UserState["user"] }) => (
         </ProtectedRoute>
       }
     />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
 
