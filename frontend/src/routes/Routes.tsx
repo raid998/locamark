@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AddAnnonce from "../components/Annonce/Add";
 import EditAnnonce from "../components/Annonce/Edit";
 import ShowAnnonce from "../components/Annonce/Show";
@@ -15,7 +15,7 @@ const Router = ({ user }: { user: UserState["user"] }) => (
   <Routes>
     <Route path="/" element={<Accueil />} />
     <Route
-      path="/"
+      path="/liste-annonces"
       element={
         <ProtectedRoute user={user}>
           <ListeAnnonces />
