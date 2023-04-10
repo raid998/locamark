@@ -13,7 +13,7 @@ import Accueil from "../components/Accueil/Accueil";
 
 const Router = ({ user }: { user: UserState["user"] }) => (
   <Routes>
-    <Route path="/" element={<Accueil />} />
+    <Route path="/" element={<Accueil user={user} />} />
     <Route
       path="/liste-annonces"
       element={
