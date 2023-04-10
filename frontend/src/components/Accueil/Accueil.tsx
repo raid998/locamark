@@ -1,7 +1,14 @@
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import { theme } from "../../utils/theme";
+import { UserState } from "../../types";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Accueil = () => {
+const Accueil = ({ user }: { user: UserState["user"] }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) navigate("/annonces", { replace: true });
+  });
   return (
     <Box
       sx={{
