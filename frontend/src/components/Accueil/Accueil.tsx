@@ -12,7 +12,9 @@ const Accueil = () => {
         justify: "center",
       }}
     >
-      <Typography variant="h3">Bienvenue</Typography>
+      <Typography variant="h4" mb={2}>
+        Bienvenue chez votre Local Market
+      </Typography>
       <Typography variant="h3">Besoin d'un service ?</Typography>
       <Box
         sx={{
