@@ -15,7 +15,7 @@ export const authController: RequestHandler = async (req, res, next) => {
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
 
-    const passwordCorrect = comparePasswords(
+    const passwordCorrect = await comparePasswords(
       loginData.data.email,
       loginData.data.password
     );
@@ -51,8 +51,10 @@ export const registerController: RequestHandler = async (req, res, next) => {
         message:
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
-    await createUtilisateur(user.data);
-    return res.status(201).send({ message: "Utilisateur créé avec succès" });
+    const newUser = await createUtilisateur(user.data);
+    if (newUser)
+      return res.status(201).send({ message: "Utilisateur créé avec succès" });
+    return res.sendStatus(400);
   } catch (err) {
     next(err);
   }

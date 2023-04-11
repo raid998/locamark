@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AddAnnonce from "../components/Annonce/Add";
 import EditAnnonce from "../components/Annonce/Edit";
 import ShowAnnonce from "../components/Annonce/Show";
@@ -9,11 +9,13 @@ import ListeAnnonces from "../pages/Annonces/ListeAnnonces";
 import MesAnnonces from "../pages/MesAnnonces/MesAnnonces";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import { UserState } from "../types";
+import Accueil from "../components/Accueil/Accueil";
 
 const Router = ({ user }: { user: UserState["user"] }) => (
   <Routes>
+    <Route path="/" element={<Accueil user={user} />} />
     <Route
-      path="/"
+      path="/liste-annonces"
       element={
         <ProtectedRoute user={user}>
           <ListeAnnonces />
@@ -70,6 +72,7 @@ const Router = ({ user }: { user: UserState["user"] }) => (
         </ProtectedRoute>
       }
     />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
 

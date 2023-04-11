@@ -32,7 +32,7 @@ const Authentification = () => {
 
       localStorage.setItem("user", JSON.stringify(user));
       toast.success("Connexion réussie!");
-      navigate("/");
+      navigate("/liste-annonces");
     } catch {
       toast.error("Les coordonnées que vous avez saisies sont erronées.");
     }
@@ -94,7 +94,6 @@ const Authentification = () => {
             Vous n'avez pas de compte? Inscrivez-vous
           </Link>
         </Typography>
-
       </Container>
     </Box>
   );

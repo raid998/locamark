@@ -116,8 +116,13 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
           {" "}
           <CardMedia
             component="img"
-            sx={{ width: 251, height: 251, objectFit:"cover" }}
-            image={annonce.photos?.length ? (process.env.REACT_APP_REMOTE ||'http://localhost:8080')+annonce.photos[0].slice(7) : ""}
+            sx={{ width: 251, height: 251, objectFit: "cover" }}
+            image={
+              annonce.photos?.length
+                ? (process.env.REACT_APP_REMOTE || "http://localhost:8080") +
+                  annonce.photos[0].slice(7)
+                : ""
+            }
             alt="Live from space album cover"
           />
         </Link>
@@ -150,7 +155,12 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
               whiteSpace="initial"
               textOverflow="ellipsis"
               sx={{ overflowWrap: "break-word" }}
-                dangerouslySetInnerHTML={{__html: annonce.description.replace(/(<([^>]+)>)/gi, "").replace(/\n/gi, "").replace(/\s+/, "")}}
+              dangerouslySetInnerHTML={{
+                __html: annonce.description
+                  .replace(/(<([^>]+)>)/gi, "")
+                  .replace(/\n/gi, "")
+                  .replace(/\s+/, ""),
+              }}
             />
             <Box
               sx={{
@@ -171,7 +181,7 @@ const Annonce = ({ annonce, edit }: { annonce: IAnnonce; edit: boolean }) => {
               justifyContent={"flex-start"}
               mt={1}
             >
-              <p>Prix : {annonce.prix}$</p>
+              <p>Budget : {annonce.prix}$</p>
               <p>
                 {annonce.user.prenom} {annonce.user.nom} - {annonce.telephone}{" "}
               </p>

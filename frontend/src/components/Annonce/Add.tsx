@@ -10,8 +10,7 @@ import Box from "@mui/material/Box";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField,   IconButton,
-} from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import {
   CreateAnnonceInput,
   createAnnonceSchema,
@@ -23,7 +22,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { axiosPrivate } from "../../utils/axios";
 import { isValidFile } from "../../utils/filechecker";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const AddAnnonce = () => {
   const { loading } = useAppSelector((state) => state.annonces);
@@ -40,7 +39,10 @@ const AddAnnonce = () => {
           if (isValid) {
             const reader = new FileReader();
             reader.onloadend = () => {
-              setImagePreviews([...imagePreviews, {id: imagePreviews.length, image: reader.result}]);
+              setImagePreviews([
+                ...imagePreviews,
+                { id: imagePreviews.length, image: reader.result },
+              ]);
             };
             reader.readAsDataURL(file);
             setSelectedPhotos([...selectedPhotos, file]);
@@ -84,7 +86,7 @@ const AddAnnonce = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const handleCancelClick = (id: any) => {
     setSelectedImage(null);
-    setImagePreviews(imagePreviews.filter(preview => preview.id !== id))
+    setImagePreviews(imagePreviews.filter((preview) => preview.id !== id));
   };
 
   return (
@@ -93,7 +95,6 @@ const AddAnnonce = () => {
       component="form"
       onSubmit={handleSubmit(
         async (data) => {
-          console.log("success");
           const formData = new FormData();
           formData.append("titre", data.titre);
           formData.append("description", data.description);
@@ -113,7 +114,6 @@ const AddAnnonce = () => {
                 "Content-Type": "multipart/form-data",
               },
             });
-            console.log(response.data);
           } catch (error) {
             console.error(error);
           }
@@ -162,102 +162,100 @@ const AddAnnonce = () => {
           container
           className="annonce-item-element"
           direction={"column"}
-          sx={{ backgroundColor: "lightgrey", maxWidth: '100%', overflowX: "auto", }}
+          sx={{
+            backgroundColor: "lightgrey",
+            maxWidth: "100%",
+            overflowX: "auto",
+          }}
           height="300"
-          
         >
           <Box
-          
             padding={1}
             sx={{
-             
               overflowX: "auto",
-              maxWidth: '95%'
+              maxWidth: "95%",
             }}
             display={"flex"}
             flexWrap={"wrap"}
             flexDirection={"row"}
-          justifyContent={"center"}
-          alignItems={"center"}
+            justifyContent={"center"}
+            alignItems={"center"}
           >
-            
-            {imagePreviews.length ? 
-             imagePreviews.map(file  => ( 
-             <Grid
-             key={file.id}
-              item
-              sx={{
-                margin: "4px",
-                width: "240px",
-                height: "240px",
-                display: "inline-block",
-              }}
-            > <Paper
-             
-              variant="elevation"
-              sx={{
-                width: 240,
-                height: 240,
-                overflow: "hidden",
-                position: 'relative', 
-                '& .cancel-icon': {
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  zIndex: 1
-                }
-                
-              }}
-            >
-             {selectedImage === file.id && (
-                <IconButton
-                  className="cancel-icon"
-                  onClick={() => {
-                    handleCancelClick(file.id)
+            {imagePreviews.length ? (
+              imagePreviews.map((file) => (
+                <Grid
+                  key={file.id}
+                  item
+                  sx={{
+                    margin: "4px",
+                    width: "240px",
+                    height: "240px",
+                    display: "inline-block",
                   }}
                 >
-                  <CancelIcon />
-                </IconButton>
-              )}
-  <img
-    src={file.image}
-    style={{
-      minWidth: "100%",
-      height: "100%",
-      objectFit: "cover",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      
-    }}
-    onClick={() => setSelectedImage(file.id)}
-
-  />
-  </Paper>
-  </Grid>
-))
-             : (
+                  {" "}
+                  <Paper
+                    variant="elevation"
+                    sx={{
+                      width: 240,
+                      height: 240,
+                      overflow: "hidden",
+                      position: "relative",
+                      "& .cancel-icon": {
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        zIndex: 1,
+                      },
+                    }}
+                  >
+                    {selectedImage === file.id && (
+                      <IconButton
+                        className="cancel-icon"
+                        onClick={() => {
+                          handleCancelClick(file.id);
+                        }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    )}
+                    <img
+                      src={file.image}
+                      style={{
+                        minWidth: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
+                      onClick={() => setSelectedImage(file.id)}
+                    />
+                  </Paper>
+                </Grid>
+              ))
+            ) : (
               <Grid>
-    <Paper
-                variant="elevation"
-                sx={{
-                  width: 240,
-                  height: 240,
-                  overflow: "hidden",
-                  position: "relative",
-                }}
-              >
-    <AddPhotoAlternateIcon
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-    /></Paper></Grid>
-  )}
-              
-            
+                <Paper
+                  variant="elevation"
+                  sx={{
+                    width: 240,
+                    height: 240,
+                    overflow: "hidden",
+                    position: "relative",
+                  }}
+                >
+                  <AddPhotoAlternateIcon
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </Paper>
+              </Grid>
+            )}
           </Box>
           <Button
             sx={{ margin: "0 auto" }}
