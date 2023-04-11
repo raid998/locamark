@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import { Annonce } from "../model/annonce.model";
 import { User } from "../model/user.model";
 import bcrypt from "bcrypt";
-
+import fs from 'fs'
 export const seedDB = async () => {
+
   await mongoose.connection.dropDatabase();
   const user1 = new User({
     nom: "Benakcha",
@@ -172,106 +173,6 @@ export const seedDB = async () => {
     prix: 600,
     user: user2._id,
   });
-  const annonce7 = new Annonce({
-    titre: "Annonce 7",
-    telephone: "0699999999",
-    adresse: "5 Boulevard Arc de triomphe",
-    codePostal: "75008",
-    ville: "Paris",
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-    amet, consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-    veniam, quis nostrud exercitation ullamco laboris nisi ut
-    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat.`,
-    prix: 600,
-    user: user2._id,
-  });
-  const annonce8 = new Annonce({
-    titre: "Annonce 8",
-    telephone: "0699999999",
-    adresse: "5 Boulevard Arc de triomphe",
-    codePostal: "75008",
-    ville: "Paris",
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-    amet, consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-    veniam, quis nostrud exercitation ullamco laboris nisi ut
-    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat.`,
-    prix: 600,
-    user: user2._id,
-  });
-  const annonce9 = new Annonce({
-    titre: "Annonce 9",
-    telephone: "0699999999",
-    adresse: "5 Boulevard Arc de triomphe",
-    codePostal: "75008",
-    ville: "Paris",
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-    amet, consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-    veniam, quis nostrud exercitation ullamco laboris nisi ut
-    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat.`,
-    prix: 600,
-    user: user2._id,
-  });
-  const annonce10 = new Annonce({
-    titre: "Annonce 10",
-    telephone: "0697699999",
-    adresse: "5 Boulevard Arc de triomphe",
-    codePostal: "75008",
-    ville: "Paris",
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-    amet, consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-    veniam, quis nostrud exercitation ullamco laboris nisi ut
-    aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat.`,
-    prix: 600,
-    user: user2._id,
-  });
 
   user1.annonces?.push(annonce1.id);
   user1.annonces?.push(annonce2.id);
@@ -279,13 +180,25 @@ export const seedDB = async () => {
   user2.annonces?.push(annonce4.id);
   user2.annonces?.push(annonce5.id);
   user2.annonces?.push(annonce6.id);
-  user2.annonces?.push(annonce7.id);
-  user2.annonces?.push(annonce8.id);
-  user2.annonces?.push(annonce9.id);
-  user2.annonces?.push(annonce10.id);
 
   await User.insertMany([user1, user2]);
   console.log("Users created successfully");
+  await fs.promises.mkdir('uploads/'+user1.id)
+  await fs.promises.mkdir('uploads/'+user2.id)
+  await fs.promises.copyFile('pictures/aron-jager-mOaS_uAW4lk-unsplash.jpg', 'uploads/'+user1.id+'/aron-jager-mOaS_uAW4lk-unsplash.jpg')
+  await fs.promises.copyFile('pictures/denny-muller-ruwID4HIZUg-unsplash.jpg', 'uploads/'+user1.id+'/denny-muller-ruwID4HIZUg-unsplash.jpg')
+  await fs.promises.copyFile('pictures/matt-artz-vT684iB7Ejg-unsplash.jpg', 'uploads/'+user1.id+'/matt-artz-vT684iB7Ejg-unsplash.jpg')
+  await fs.promises.copyFile('pictures/aron-jager-mOaS_uAW4lk-unsplash.jpg', 'uploads/'+user2.id+'/aron-jager-mOaS_uAW4lk-unsplash.jpg')
+  await fs.promises.copyFile('pictures/denny-muller-ruwID4HIZUg-unsplash.jpg', 'uploads/'+user2.id+'/denny-muller-ruwID4HIZUg-unsplash.jpg')
+  await fs.promises.copyFile('pictures/matt-artz-vT684iB7Ejg-unsplash.jpg', 'uploads/'+user2.id+'/matt-artz-vT684iB7Ejg-unsplash.jpg')
+  
+  annonce1.photos.push('uploads/'+user1.id+'/aron-jager-mOaS_uAW4lk-unsplash.jpg')
+  annonce2.photos.push('uploads/'+user1.id+'/denny-muller-ruwID4HIZUg-unsplash.jpg')
+  annonce3.photos.push('uploads/'+user1.id+'/matt-artz-vT684iB7Ejg-unsplash.jpg')
+  annonce4.photos.push('uploads/'+user2.id+'/aron-jager-mOaS_uAW4lk-unsplash.jpg')
+  annonce5.photos.push('uploads/'+user2.id+'/denny-muller-ruwID4HIZUg-unsplash.jpg')
+  annonce6.photos.push('uploads/'+user2.id+'/matt-artz-vT684iB7Ejg-unsplash.jpg')
+
   await Annonce.insertMany([
     annonce1,
     annonce2,
@@ -293,10 +206,6 @@ export const seedDB = async () => {
     annonce4,
     annonce5,
     annonce6,
-    annonce7,
-    annonce8,
-    annonce9,
-    annonce10,
   ]);
   console.log("Announces created successfully");
 };
