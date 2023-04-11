@@ -15,7 +15,6 @@ export const authController: RequestHandler = async (req, res, next) => {
           "Les données que vous avez saisies sont erronées, veuillez réessayer.",
       });
 
-    console.log(loginData.data.password);
     const passwordCorrect = await comparePasswords(
       loginData.data.email,
       loginData.data.password

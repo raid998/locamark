@@ -20,7 +20,7 @@ export const seedDB = async () => {
 
   const annonce1 = new Annonce({
     titre: "Annonce 1",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -46,7 +46,7 @@ export const seedDB = async () => {
 
   const annonce2 = new Annonce({
     titre: "Annonce 2",
-    telephone: "0019999999",
+    telephone: "0619999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -72,7 +72,7 @@ export const seedDB = async () => {
 
   const annonce3 = new Annonce({
     titre: "Annonce 3",
-    telephone: "0976999999",
+    telephone: "0676999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -98,7 +98,7 @@ export const seedDB = async () => {
 
   const annonce4 = new Annonce({
     titre: "Annonce 4",
-    telephone: "0994599999",
+    telephone: "0694599999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -124,7 +124,7 @@ export const seedDB = async () => {
 
   const annonce5 = new Annonce({
     titre: "Annonce 5",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -149,7 +149,7 @@ export const seedDB = async () => {
   });
   const annonce6 = new Annonce({
     titre: "Annonce 6",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -174,7 +174,7 @@ export const seedDB = async () => {
   });
   const annonce7 = new Annonce({
     titre: "Annonce 7",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -199,7 +199,7 @@ export const seedDB = async () => {
   });
   const annonce8 = new Annonce({
     titre: "Annonce 8",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -224,7 +224,7 @@ export const seedDB = async () => {
   });
   const annonce9 = new Annonce({
     titre: "Annonce 9",
-    telephone: "0999999999",
+    telephone: "0699999999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -249,7 +249,7 @@ export const seedDB = async () => {
   });
   const annonce10 = new Annonce({
     titre: "Annonce 10",
-    telephone: "0999999999",
+    telephone: "0697699999",
     adresse: "5 Boulevard Arc de triomphe",
     codePostal: "75008",
     ville: "Paris",
@@ -286,6 +286,17 @@ export const seedDB = async () => {
 
   await User.insertMany([user1, user2]);
   console.log("Users created successfully");
-  await Annonce.insertMany([annonce1, annonce2, annonce3, annonce4, annonce5, annonce6, annonce7, annonce8, annonce9, annonce10]);
+  await Annonce.insertMany([
+    annonce1,
+    annonce2,
+    annonce3,
+    annonce4,
+    annonce5,
+    annonce6,
+    annonce7,
+    annonce8,
+    annonce9,
+    annonce10,
+  ]);
   console.log("Announces created successfully");
 };
